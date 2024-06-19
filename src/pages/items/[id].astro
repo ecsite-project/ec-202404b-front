@@ -1,0 +1,47 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import Layout from '@/layouts/Layout.astro';
+import { items } from '@/service/item_service';
+const { id } = Astro.params;
+const item = items.find((item) => item.id === id);
+console.log(item);
+---
+
+<Layout title="ペット詳細">
+  {
+    item ? (
+      <div class="flex items-center justify-center mt-10">
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>{item.breed}</CardTitle>
+            <CardDescription>{item.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>{item.price}円</p>
+            <p>{item.gender}</p>
+            <p>{item.birthDay}</p>
+            <p>{item.color}</p>
+            <p>{item.weight}kg</p>
+          </CardContent>
+          <CardFooter>
+            <form method="post">
+              <input type="hidden" name="item" value={item.id} />
+              <button type="submit">カートに入れる</button>
+            </form>
+          </CardFooter>
+        </Card>
+      </div>
+    ) : (
+      <>
+        <p>Item not found</p>
+      </>
+    )
+  }
+</Layout>
