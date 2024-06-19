@@ -1,0 +1,48 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="新規会員登録">
+  <form method="post" id="registerUser">
+    <h1>新規会員登録</h1>
+
+    <label for="firstName">姓</label>
+    <input type="text" name="fistName" id="firstName" />
+
+    <label for="lastName">名</label>
+    <input type="text" name="lastName" id="lastName" />
+    <br />
+
+    <label for="email">メールアドレス</label>
+    <input type="email" name="email" id="email" />
+    <br />
+
+    <label for="zipcode">郵便番号</label>
+    <input type="text" name="zipcode" id="zipcode" /><br />
+
+    <label for="prefecture">都道府県</label>
+    <input type="text" name="prefecture" id="prefecture" /><br />
+
+    <label for="municipalities">市区町村</label>
+    <input type="text" name="municipalities" id="municipalities" /><br />
+
+    <label for="address">住所</label>
+    <input type="text" name="address" id="address" /><br />
+
+    <label for="telephone">電話番号</label>
+    <input type="tel" name="telephone" id="telephone" /><br />
+
+    <label for="password">パスワード</label>
+    <input type="password" name="password" id="password" /><br />
+
+    <label for="confirmationPassword">確認用パスワード</label>
+    <input
+      type="password"
+      name="confirmationPassword"
+      id="confirmationPassword"
+    />
+    <br />
+
+    <button type="submit">登録</button>
+  </form>
+</Layout>
