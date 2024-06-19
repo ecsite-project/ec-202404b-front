@@ -1,0 +1,25 @@
+---
+import ItemCard from '@/components/ItemCard.astro';
+import { SearchBox } from '@/components/SearchBox';
+import Layout from '@/layouts/Layout.astro';
+import { mockFetch } from '@/services/item_service';
+
+const page = mockFetch();
+---
+
+<Layout title="ペット一覧">
+  <h1>ペット一覧</h1>
+  <div class="m-4">
+    <SearchBox client:only="react" />
+  </div>
+
+  <ul class="grid grid-rows-4 grid-flow-col gap-4">
+    {
+      page.records.map((item) => (
+        <li>
+          <ItemCard item={item} />
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
