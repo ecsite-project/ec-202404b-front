@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { LoginFormSchema } from '@/types/auth_type';
+
+if (Astro.request.method === 'POST') {
+  const data = await Astro.request.formData().then((data) => {
+    const r: Record<string, string> = {};
+    for (const [key, value] of data.entries()) {
+      r[key] = value.toString();
+    }
+    return r;
+  });
+  const parsed = LoginFormSchema.safeParse(data);
+  // TODO(char5742): サーバーとの連携を行う
+  console.log(parsed);
+}
+---
+
+<Layout title="ログイン画面">
+  <form method="post">
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" />
+    <br />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+    <button>ログイン</button>
+  </form>
+</Layout>
