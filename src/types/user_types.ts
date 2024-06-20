@@ -22,7 +22,7 @@ export const CreateUserFormSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'パスワードが一致していません',
-    path: ['confirmationPassword'],
+    path: ['confirmPassword'],
   });
 
 export type CreateUserForm = z.infer<typeof CreateUserFormSchema>;
