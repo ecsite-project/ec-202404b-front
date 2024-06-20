@@ -1,0 +1,135 @@
+---
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import Layout from '@/layouts/Layout.astro';
+import items from '@/services/items.json';
+import { prefectures } from '@/services/prefectures';
+import {
+  CreateOrderFormSchema,
+  type CreateOrderForm,
+  type CreateOrderFormError,
+} from '@/types/order_types';
+
+let error: CreateOrderFormError | undefined;
+let form: Partial<CreateOrderForm> | undefined;
+
+if (Astro.request.method === 'POST') {
+  const body = await Astro.request.formData().then((data) => {
+    const obj: Record<string, string> = {};
+    data.forEach((value, key) => {
+      obj[key] = value.toString();
+    });
+    return obj;
+  });
+
+  const parsed = await CreateOrderFormSchema.safeParse(body);
+
+  //TODO(udonrm) バックエンドとの連携
+}
+
+const today = new Date();
+const year = today.getFullYear();
+const month = String(today.getMonth() + 1).padStart(2, '0');
+const sevenDaysFromToday = String(today.getDate() + 7).padStart(2, '0');
+const deliveryStartDay = `${year}-${month}-${sevenDaysFromToday}`;
+---
+
+<Layout title="注文内容確認">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">商品</TableHead>
+        <TableHead>追加オプション</TableHead>
+        <TableHead>価格</TableHead>
+        <TableHead className="text-right">小計</TableHead>
+        <TableHead />
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {
+        items.map((item) => (
+          <TableRow>
+            <TableCell className="font-medium">{item.breed}</TableCell>
+            <TableCell>ワクワクセット</TableCell>
+            <TableCell>{item.price}</TableCell>
+            <TableCell className="text-right">{item.price}</TableCell>
+            <TableCell>
+              <button>削除</button>
+            </TableCell>
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
+  <form method="post">
+    <p>お届け先情報</p>
+
+    <label for="destinationName">お名前</label>
+    <input type="text" name="destinationName" id="destinationName" />
+    <br />
+
+    <label for="destinationEmail">メールアドレス</label>
+    <input type="text" name="destinationEmail" id="destinationEmail" />
+    <br />
+
+    <label for="destinationZipcode">郵便番号</label>
+    <input type="text" name="destinationZipcode" id="destinationZipcode" />
+    <br />
+
+    <label for="destinationPrefecture">都道府県</label>
+    <select name="destinationPrefecture" id="destinationPrefecture">
+      {
+        prefectures.map((prefecture) => (
+          <option value={prefecture.name}>{prefecture.name}</option>
+        ))
+      }
+    </select>
+
+    <label for="destinationMunicipalities">市区町村</label>
+    <input
+      type="text"
+      name="destinationMunicipalities"
+      id="destinationMunicipalities"
+    />
+
+    <label for="destinationAddress">住所</label>
+    <input type="text" name="destinationAddress" id="destinationAddress" />
+    <br />
+
+    <label for="destinationTel">電話番号</label>
+    <input type="tel" name="destinationTel" id="destinationTel" />
+    <br />
+
+    <label for="deliveryDate">配達日時</label>
+    <input
+      type="date"
+      name="deliveryDate"
+      id="deliveryDate"
+      min={deliveryStartDay}
+    />
+
+    <label for="deliveryTime"></label>
+    <select name="deliveryTime" id="deliveryTime">
+      <option value="">--</option>
+      <option value="timeZone1">8~10時</option>
+      <option value="timeZone2">10~12時</option>
+      <option value="timeZone3">12~14時</option>
+      <option value="timeZone4">14~16時</option>
+      <option value="timeZone5">16~18時</option>
+    </select>
+    <br />
+
+    <label for="paymentMethod">お支払い方法</label>
+    <input type="radio" name="paymentMethod" id="cash" />現金
+    <input type="radio" name="paymentMethod" id="credit_card" />クレジットカード
+    <br />
+
+    <button type="submit">注文を確定する</button>
+  </form>
+</Layout>
