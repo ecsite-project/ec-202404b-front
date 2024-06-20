@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import {
   Card,
   CardContent,
@@ -8,10 +9,20 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Layout from '@/layouts/Layout.astro';
-import { items } from '@/service/item_service';
-const { id } = Astro.params;
-const item = items.find((item) => item.id === id);
-console.log(item);
+import { fetchItemList } from '@/services/item_service';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const itemList = await fetchItemList();
+  console.log(itemList);
+  return itemList.map((item) => ({
+    params: {
+      id: item.id.toString(),
+    },
+    props: { item },
+  }));
+}) satisfies GetStaticPaths;
+const item = Astro.props.item;
 ---
 
 <Layout title="ペット詳細">
@@ -20,7 +31,7 @@ console.log(item);
       <div class="flex items-center justify-center mt-10">
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle>{item.breed}</CardTitle>
+            <CardTitle>{item.breed.name}</CardTitle>
             <CardDescription>{item.description}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -29,7 +40,7 @@ console.log(item);
             <p>{item.gender}</p>
             <p>{item.birthDay}</p>
             <p>{item.color}</p>
-            <p>{item.weight}kg</p>
+            {/* <p>{item.weight}kg</p> */}
           </CardContent>
           <CardFooter>
             <form method="post">
