@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { login } from '@/services/auth_service';
 import { LoginFormSchema } from '@/types/auth_type';
 
 if (Astro.request.method === 'POST') {
@@ -11,8 +12,15 @@ if (Astro.request.method === 'POST') {
     return r;
   });
   const parsed = LoginFormSchema.safeParse(data);
-  // TODO(char5742): サーバーとの連携を行う
-  console.log(parsed);
+  if (parsed.success) {
+    const isSuccess = await login(Astro.cookies, {
+      email: parsed.data?.email,
+      password: parsed.data?.password,
+    });
+    if (isSuccess) {
+      Astro.redirect('/items');
+    }
+  }
 }
 ---
 
