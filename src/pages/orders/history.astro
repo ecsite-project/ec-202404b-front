@@ -1,0 +1,88 @@
+---
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import Layout from '@/layouts/Layout.astro';
+
+const orders = [
+  {
+    id: 'generated-uuid-1',
+    user: {
+      id: 'generated-uuid-user-1',
+      name: 'Taro Yamada',
+    },
+    status: '注文前',
+    total_price: 320000,
+    order_date: '2024-06-20',
+    destination_name: 'Taro Yamada',
+    destination_email: 'taro.yamada@example.com',
+    destination_zipcode: '123-4567',
+    destination_prefecture: 'Tokyo',
+    destination_municipalities: 'Shibuya',
+    destination_address: 'Shibuya 1-1-1',
+    destination_tel: '090-1234-5678',
+    delivery_date: '2024-06-27',
+    delivery_time: '8:00-10:00',
+    payment_method: 'クレジットカード',
+    created_at: '2024-06-20T00:00:00Z',
+    updated_at: '2024-06-20T00:00:00Z',
+  },
+  {
+    id: 'generated-uuid-2',
+    user: {
+      id: 'generated-uuid-user-2',
+      name: 'Hanako Suzuki',
+    },
+    status: '注文前',
+    total_price: 270000,
+    order_date: '2024-06-20',
+    destination_name: 'Hanako Suzuki',
+    destination_email: 'hanako.suzuki@example.com',
+    destination_zipcode: '765-4321',
+    destination_prefecture: 'Osaka',
+    destination_municipalities: 'Naniwa',
+    destination_address: 'Naniwa 2-2-2',
+    destination_tel: '080-8765-4321',
+    delivery_date: '2024-06-27',
+    delivery_time: '10:00-12:00',
+    payment_method: 'クレジットカード',
+    created_at: '2024-06-20T00:00:00Z',
+    updated_at: '2024-06-20T00:00:00Z',
+  },
+];
+---
+
+<Layout title="注文履歴">
+  <Table>
+    <TableCaption>注文履歴</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">注文ステータス</TableHead>
+        <TableHead>価格</TableHead>
+        <TableHead>注文日時</TableHead>
+        <TableHead className="text-right">配送予定日時</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {
+        orders.map((order) => (
+          <TableRow>
+            <TableCell className="font-medium">{order.status}</TableCell>
+            <TableCell>{order.total_price}</TableCell>
+            <TableCell>{order.order_date}</TableCell>
+            <TableCell className="text-right">
+              {order.delivery_date}
+              {order.delivery_time}
+            </TableCell>
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
+</Layout>
