@@ -2,9 +2,9 @@
 import ItemCard from '@/components/ItemCard.astro';
 import { SearchBox } from '@/components/SearchBox';
 import Layout from '@/layouts/Layout.astro';
-import { mockFetch } from '@/services/item_service';
-
-const page = mockFetch();
+import { fetchItems } from '@/services/item_service';
+export const prerender = true;
+const items = await fetchItems();
 ---
 
 <Layout title="ペット一覧">
@@ -15,7 +15,7 @@ const page = mockFetch();
 
   <ul class="grid grid-rows-4 grid-flow-col gap-4">
     {
-      page.records.map((item) => (
+      items.map((item) => (
         <li>
           <ItemCard item={item} />
         </li>
