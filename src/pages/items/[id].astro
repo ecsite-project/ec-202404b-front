@@ -24,6 +24,7 @@ console.log(item);
             <CardDescription>{item.description}</CardDescription>
           </CardHeader>
           <CardContent>
+            <img src={item.image} alt="pet image" />
             <p>{item.price}円</p>
             <p>{item.gender}</p>
             <p>{item.birthDay}</p>
@@ -33,6 +34,20 @@ console.log(item);
           <CardFooter>
             <form method="post">
               <input type="hidden" name="item" value={item.id} />
+              <div class="food">
+                <input type="radio" name="food" id="foodA" />
+                foodA
+                <input type="radio" name="food" id="foodB" />
+                foodB
+                <input type="radio" name="food" id="foodC" />
+                foodC
+              </div>
+              <div class="toy">
+                <input type="checkbox" name="toy" id="toyA" />
+                toyA
+                <input type="checkbox" name="toy" id="toyB" />
+                toyB
+              </div>
               <button type="submit">カートに入れる</button>
             </form>
           </CardFooter>
