@@ -1,0 +1,6 @@
+---
+import { signout } from '@/services/auth_service';
+
+signout(Astro.locals, Astro.cookies);
+return Astro.response.redirect('/auth/login');
+---
