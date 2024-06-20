@@ -11,6 +11,7 @@ import {
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemList } from '@/services/item_service';
 import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
 
 export const getStaticPaths = (async () => {
   const itemList = await fetchItemList();
@@ -35,7 +36,12 @@ const item = Astro.props.item;
             <CardDescription>{item.description}</CardDescription>
           </CardHeader>
           <CardContent>
-            <img src={item.image} alt="pet image" />
+            <Image
+              src={'http://localhost:8080/img/' + item.image}
+              alt="pet image"
+              width="200"
+              height="200"
+            />
             <p>{item.price}円</p>
             <p>{item.gender}</p>
             <p>{item.birthDay}</p>
