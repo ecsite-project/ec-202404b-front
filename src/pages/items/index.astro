@@ -12,7 +12,7 @@ const query = {
     maxPrice: params.get('max') ?? 500_000,
     minPrice: params.get('min') ?? 50_000,
     colorList: params.getAll('color'),
-    breedId: params.get('breed'),
+    breedId: params.get('breed') ?? '',
   },
   page: {
     currentPage: params.get('p') ?? 1,
