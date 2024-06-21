@@ -2,11 +2,12 @@ import { fetchWithCache } from '@/lib/chche';
 import {
   ItemListSchema,
   ItemPageSchema,
+  type ItemList,
   type ItemPage,
   type SearchQuery,
 } from '@/types/item_types';
 
-export const fetchItems = async (): Promise<ItemPage> => {
+export const fetchItemList = async (): Promise<ItemList> => {
   const response = await fetchWithCache(
     `http://localhost:8080/api/getItemList`
   );
@@ -15,18 +16,8 @@ export const fetchItems = async (): Promise<ItemPage> => {
   }
   const data = await response.json();
   const parsed = ItemListSchema.parse(data);
-  const currentPage = 1;
-  const perPage = 10;
-  const page: ItemPage = {
-    records: parsed.slice((currentPage - 1) * perPage, currentPage * perPage),
-    metadata: {
-      currentPage: currentPage,
-      perPage: perPage,
-      lastPage: Math.ceil(parsed.length / perPage),
-      total: parsed.length,
-    },
-  };
-  return page;
+
+  return parsed;
 };
 
 export const fetchItemsWithParams = async (
