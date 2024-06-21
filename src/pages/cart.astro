@@ -7,11 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { fetchCart } from '@/services/cart_service';
 import items from '@/services/items.json';
 import Layout from '../layouts/Layout.astro';
-const id = Astro.locals.anonymous;
-console.log(id);
-// const cart = await fetchCart(id);
+const id = Astro.locals.user
+  ? Astro.locals.user.id
+  : Astro.locals.anonymous?.uid;
+
+if (!id) {
+  throw new Error('failed to fetch userId');
+}
+const cart = await fetchCart(id);
 ---
 
 <Layout title="カート画面">

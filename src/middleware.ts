@@ -69,8 +69,6 @@ export const anonymous = defineMiddleware(async (context, next) => {
       httpOnly: true,
     });
   }
-  console.log(context.cookies.get('anonymous'));
-
   return next();
 });
 export const onRequest = sequence(auth, routing, jwt, anonymous);
