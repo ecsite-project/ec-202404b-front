@@ -13,7 +13,7 @@ if (Astro.request.method === 'POST') {
   });
   const parsed = LoginFormSchema.safeParse(data);
   if (parsed.success) {
-    const isSuccess = await login(Astro.cookies, {
+    const isSuccess = await login(Astro.cookies, Astro.locals, {
       email: parsed.data?.email,
       password: parsed.data?.password,
     });
