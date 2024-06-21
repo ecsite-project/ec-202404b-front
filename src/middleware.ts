@@ -57,7 +57,10 @@ const jwt = defineMiddleware(async (context, next) => {
 });
 
 export const anonymous = defineMiddleware(async (context, next) => {
-  if (context.locals.user == null && !context.cookies.get('anonymous')) {
+  const uid = context.cookies.get('anonymous')?.value;
+  context.locals.anonymous = uid ? { uid } : null;
+
+  if (context.locals.user == null && context.locals.anonymous == null) {
     const anonymousUid = crypto.randomUUID();
     context.locals.anonymous = { uid: anonymousUid };
     context.cookies.set('anonymous', anonymousUid, {
