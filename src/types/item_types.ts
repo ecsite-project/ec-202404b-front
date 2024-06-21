@@ -33,12 +33,16 @@ export const ItemListSchema = z.array(ItemSchema);
 export type ItemList = z.infer<typeof ItemListSchema>;
 
 export const SearchQuerySchema = z.object({
-  maxPrice: z.coerce.number().optional(),
-  minPrice: z.coerce.number().optional(),
-  colorList: z.array(z.string()).optional(),
-  breedId: z.string().optional(),
-  page: z.number().optional(),
-  perPage: z.number().optional(),
+  search: z.object({
+    maxPrice: z.coerce.number(),
+    minPrice: z.coerce.number(),
+    colorList: z.array(z.string()),
+    breedId: z.string().nullable(),
+  }),
+  page: z.object({
+    currentPage: z.coerce.number(),
+    perPage: z.coerce.number(),
+  }),
 });
 
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
