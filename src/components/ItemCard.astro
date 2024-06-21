@@ -1,0 +1,20 @@
+---
+import type { Item } from '@/types/item_types';
+
+interface Props {
+  item: Item;
+}
+
+const { item } = Astro.props;
+console.log(item);
+---
+
+<div class="container bg-emerald-300 rounded-lg p-4">
+  <h2>{item.description}</h2>
+  <p>{item.price}円</p>
+  <p>{item.birthDay}</p>
+  <img src={item.image} alt="" />
+  <p>{item.breed.name}</p>
+  <p>{item.color.name}</p>
+  <p>{item.weight}kg</p>
+</div>

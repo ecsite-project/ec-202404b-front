@@ -45,9 +45,6 @@ const routing = defineMiddleware(async (context, next) => {
 
 // JWT認証に失敗した場合、ログインページにリダイレクト
 const jwt = defineMiddleware(async (context, next) => {
-  if (context.locals.user == null) {
-    return context.redirect('/auth/login');
-  }
   try {
     return await next();
   } catch (e: unknown) {
@@ -57,4 +54,20 @@ const jwt = defineMiddleware(async (context, next) => {
     throw e;
   }
 });
-export const onRequest = sequence(auth, routing, jwt);
+
+export const anonymous = defineMiddleware(async (context, next) => {
+  const uid = context.cookies.get('anonymous')?.value;
+  context.locals.anonymous = uid ? { uid } : null;
+
+  if (context.locals.user == null && context.locals.anonymous == null) {
+    const anonymousUid = crypto.randomUUID();
+    context.locals.anonymous = { uid: anonymousUid };
+    context.cookies.set('anonymous', anonymousUid, {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'strict',
+      httpOnly: true,
+    });
+  }
+  return next();
+});
+export const onRequest = sequence(auth, routing, jwt, anonymous);

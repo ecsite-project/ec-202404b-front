@@ -5,6 +5,7 @@ import { userTable } from 'db/schema';
 
 export const login = async (
   cookies: AstroCookies,
+  locals: App.Locals,
   {
     email,
     password,
@@ -23,6 +24,7 @@ export const login = async (
       body: JSON.stringify({
         email,
         password,
+        anonymous: locals.anonymous?.uid,
       }),
     }
   );
@@ -45,6 +47,7 @@ export const login = async (
       sessionCookie.value,
       sessionCookie.attributes
     );
+    cookies.delete('anonymous');
     return true;
   }
   return false;
