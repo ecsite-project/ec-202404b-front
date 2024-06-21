@@ -1,6 +1,6 @@
 import { lucia } from '@/lib/auth';
 import { AuthorizeError } from '@/lib/fetch';
-import { defineMiddleware, sequence } from 'astro:middleware';
+import { defineMiddleware } from 'astro:middleware';
 const auth = defineMiddleware(async (context, next) => {
   const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
@@ -57,4 +57,4 @@ const jwt = defineMiddleware(async (context, next) => {
     throw e;
   }
 });
-export const onRequest = sequence(auth, routing, jwt);
+// export const onRequest = sequence(auth, routing, jwt);
