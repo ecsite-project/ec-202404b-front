@@ -4,11 +4,20 @@ import { useState } from 'react';
 // color, price, breed,
 const colors = ['red', 'blue', 'green', 'yellow', 'black', 'white'];
 const breeds = ['poodle', 'bulldog', 'beagle', 'pug', 'shiba'];
-export const SearchBox = () => {
-  const [minPrice, setMinPrice] = useState(50_000);
-  const [maxPrice, setMaxPrice] = useState(500_000);
+export const SearchBox = ({
+  defaultValues,
+}: {
+  defaultValues: {
+    minPrice: number;
+    maxPrice: number;
+    colorList: string[];
+    breedId: string | null;
+  };
+}) => {
+  const [minPrice, setMinPrice] = useState(defaultValues.minPrice);
+  const [maxPrice, setMaxPrice] = useState(defaultValues.maxPrice);
 
-  const handleChange = (value) => {
+  const handleChange = (value: any) => {
     setMinPrice(value[0]);
     setMaxPrice(value[1]);
   };
@@ -20,7 +29,7 @@ export const SearchBox = () => {
         type="number"
         name="minPrice"
         value={minPrice}
-        onChange={(e) => setMinPrice(e.target.value)}
+        onChange={(e) => setMinPrice(Number.parseInt(e.target.value))}
       />
       円～
       <input
@@ -28,7 +37,7 @@ export const SearchBox = () => {
         type="number"
         name="maxPrice"
         value={maxPrice}
-        onChange={(e) => setMaxPrice(e.target.value)}
+        onChange={(e) => setMaxPrice(Number.parseInt(e.target.value))}
       />
       円
       <Slider
