@@ -15,7 +15,6 @@ import { Image } from 'astro:assets';
 
 export const getStaticPaths = (async () => {
   const itemList = await fetchItemList();
-  console.log(itemList);
   return itemList.map((item) => ({
     params: {
       id: item.id.toString(),
