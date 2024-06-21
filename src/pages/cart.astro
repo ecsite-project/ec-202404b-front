@@ -9,6 +9,9 @@ import {
 } from '@/components/ui/table';
 import items from '@/services/items.json';
 import Layout from '../layouts/Layout.astro';
+const id = Astro.locals.anonymous;
+console.log(id);
+// const cart = await fetchCart(id);
 ---
 
 <Layout title="カート画面">

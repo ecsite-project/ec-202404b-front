@@ -37,11 +37,10 @@ const routing = defineMiddleware(async (context, next) => {
   // 未ログインの場合、ログインページにリダイレクト
   if (
     context.locals.user == null &&
-    !context.url.pathname.startsWith('/auth')
+    context.url.pathname.startsWith('/orders/confirmation')
   ) {
     return context.redirect('/auth/login');
   }
-
   return next();
 });
 
@@ -67,6 +66,8 @@ export const anonymous = defineMiddleware(async (context, next) => {
       httpOnly: true,
     });
   }
+  console.log(context.cookies.get('anonymous'));
+
   return next();
 });
 export const onRequest = sequence(auth, routing, jwt, anonymous);

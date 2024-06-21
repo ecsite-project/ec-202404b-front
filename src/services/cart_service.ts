@@ -1,4 +1,4 @@
-export const fetchCart = async () => {
+export const fetchCart = async (id: string) => {
   const response = await fetch(
     `http://localhost:8080/api/shoppingCart/getShoppingCart`
   );
@@ -7,6 +7,5 @@ export const fetchCart = async () => {
     throw new Error('failed to fetch cart');
   }
   const data = await response.json();
-  // const parsed = OrderItemListSchema.parse(data);
   return data;
 };
