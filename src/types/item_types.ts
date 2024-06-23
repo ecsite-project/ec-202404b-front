@@ -17,6 +17,7 @@ export const ItemSchema = z.object({
   price: z.number(),
   birthDay: z.coerce.date(),
   image: z.string(),
+  deleted: z.boolean(),
   gender: z.string(),
   breed: BreedSchema,
   color: ColorSchema,
