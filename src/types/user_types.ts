@@ -4,10 +4,8 @@ export const CreateUserFormSchema = z
   .object({
     firstName: z.string().min(1, { message: '名前を入力してください' }),
     lastName: z.string().min(1, { message: '姓を入力してください' }),
-    email: z
-      .string()
-      .email({ message: 'メールアドレスの形式ではありません' })
-      .min(1, { message: 'メールアドレスを入力してください' }),
+    email: z.string().email({ message: 'メールアドレスの形式ではありません' }),
+    // .min(1, { message: 'メールアドレスを入力してください' }),
     zipcode: z.string().min(1, { message: '郵便番号を入力してください' }),
     prefecture: z.string().min(1, { message: '都道府県を入力してください' }),
     municipalities: z
