@@ -8,7 +8,7 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,7 +22,7 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="font-m-plus-rounded-1c">
+  <body class="font-m-plus-rounded-1c bg-stone-50">
     <Header />
     <slot />
   </body>
