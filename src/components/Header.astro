@@ -4,7 +4,7 @@
       <div class="flex h-16 items-center justify-between">
         <!-- Logo -->
         <div class="ml-4 mt-6">
-          <a href="">
+          <a href="/items">
             <img class="h-16" src="/images/logo.png" alt="shop_logo" />
           </a>
         </div>
@@ -16,17 +16,32 @@
               >person</span
             >
           </a>
-          <a
-            href="/auth/login"
-            class="text-sm font-medium text-gray-700 hover:text-gray-800"
-            >ログイン</a
-          >
-          <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-          <a
-            href="/signup"
-            class="text-sm font-medium text-gray-700 hover:text-gray-800"
-            >新規登録</a
-          >
+          {
+            Astro.locals.user == null ? (
+              <>
+                <a
+                  href="/auth/login"
+                  class="text-sm font-medium text-gray-700 hover:text-gray-800"
+                >
+                  ログイン
+                </a>
+                <span class="h-6 w-px bg-gray-200" aria-hidden="true" />
+                <a
+                  href="/signup"
+                  class="text-sm font-medium text-gray-700 hover:text-gray-800"
+                >
+                  新規登録
+                </a>
+              </>
+            ) : (
+              <a
+                href="/auth/signout"
+                class="text-sm font-medium text-gray-700 hover:text-gray-800"
+              >
+                ログアウト
+              </a>
+            )
+          }
 
           <!-- Cart -->
           <div class="ml-4 flow-root">

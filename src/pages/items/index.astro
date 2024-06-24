@@ -1,5 +1,6 @@
 ---
 import ItemCard from '@/components/ItemCard.astro';
+import Pagination from '@/components/Pagination/Pagination.astro';
 import { SearchBox } from '@/components/SearchBox';
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemsWithParams } from '@/services/item_service';
@@ -12,7 +13,7 @@ const query = {
     maxPrice: params.get('max') ?? 500_000,
     minPrice: params.get('min') ?? 50_000,
     colorList: params.getAll('color'),
-    breedId: params.get('breed') ?? '',
+    breed: params.get('breed') ?? '',
   },
   page: {
     currentPage: params.get('p') ?? 1,
@@ -39,7 +40,7 @@ const items = await fetchItemsWithParams(parsed.data);
         maxPrice: parsed.data.search.maxPrice,
         minPrice: parsed.data.search.minPrice,
         colorList: parsed.data.search.colorList,
-        breedId: parsed.data.search.breedId,
+        breed: parsed.data.search.breed,
       }}
     />
   </div>
@@ -56,5 +57,5 @@ const items = await fetchItemsWithParams(parsed.data);
     </ul>
   </div>
   <!-- TODO(char5742): Implement pagination -->
-  <!-- <ItemPagination client:load currentPage={items.metadata.currentPage} /> -->
+  <Pagination page={items} />
 </Layout>
