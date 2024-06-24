@@ -260,7 +260,6 @@ if (Astro.request.method === 'POST') {
       );
       const data = await response.json();
       const components = data.items[0].components;
-      console.log(data.items);
       if (prefecture) {
         prefecture.value = components[0];
       }
