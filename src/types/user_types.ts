@@ -39,3 +39,16 @@ export type CreateUserForm = z.infer<typeof CreateUserFormSchema>;
 export type CreateUserFormError = z.inferFormattedError<
   typeof CreateUserFormSchema
 >;
+
+export const UserInfoSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  zipcode: z.string(),
+  prefecture: z.string(),
+  municipalities: z.string(),
+  address: z.string(),
+  telephone: z.string(),
+  orderHistory: z.array(z.string()),
+});
+
+export type UserInfo = z.infer<typeof UserInfoSchema>;
