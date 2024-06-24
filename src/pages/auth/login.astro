@@ -19,7 +19,7 @@ if (Astro.request.method === 'POST') {
       password: parsed.data?.password,
     });
     if (isSuccess) {
-      Astro.redirect('/items');
+      return Astro.redirect('/items');
     }
   }
 }

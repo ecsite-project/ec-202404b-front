@@ -1,6 +1,6 @@
 import { lucia } from '@/lib/auth';
 import { AuthorizeError } from '@/lib/fetch';
-import { defineMiddleware } from 'astro:middleware';
+import { defineMiddleware, sequence } from 'astro:middleware';
 const auth = defineMiddleware(async (context, next) => {
   const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
@@ -35,7 +35,7 @@ const routing = defineMiddleware(async (context, next) => {
   // 未ログインの場合、ログインページにリダイレクト
   if (
     context.locals.user == null &&
-    !context.url.pathname.startsWith('/auth')
+    context.url.pathname.startsWith('/orders')
   ) {
     return context.redirect('/auth/login');
   }
@@ -70,4 +70,5 @@ export const anonymous = defineMiddleware(async (context, next) => {
   }
   return next();
 });
-// export const onRequest = sequence(auth, routing, jwt, anonymous);
+
+export const onRequest = sequence(auth, routing, jwt, anonymous);
