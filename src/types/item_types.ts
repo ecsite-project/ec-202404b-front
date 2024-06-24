@@ -39,7 +39,7 @@ export const SearchQuerySchema = z.object({
     maxPrice: z.coerce.number(),
     minPrice: z.coerce.number(),
     colorList: z.array(z.string()),
-    breedId: z.string(),
+    breed: z.string(),
   }),
   page: z.object({
     currentPage: z.coerce.number(),
