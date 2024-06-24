@@ -41,7 +41,7 @@ const item = Astro.props.item;
               width="200"
               height="200"
             />
-            <p>{item.price}円</p>
+            <p>{new Intl.NumberFormat().format(item.price)}円</p>
             <p>{item.gender}</p>
             <p>{item.birthDay}</p>
             <p>{item.color}</p>

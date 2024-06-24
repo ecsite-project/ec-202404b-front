@@ -63,7 +63,9 @@ const { item } = Astro.props;
         <span class="text-base font-bold text-slate-900">生体価格</span>
       </p>
       <p>
-        <span class="text-xl font-bold text-slate-900">￥{item.price}</span>
+        <span class="text-xl font-bold text-slate-900"
+          >￥{new Intl.NumberFormat().format(item.price)}</span
+        >
       </p>
     </div>
     <a
