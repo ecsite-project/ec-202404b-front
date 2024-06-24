@@ -1,5 +1,6 @@
 ---
 import ItemCard from '@/components/ItemCard.astro';
+import Pagination from '@/components/Pagination/Pagination.astro';
 import { SearchBox } from '@/components/SearchBox';
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemsWithParams } from '@/services/item_service';
@@ -56,5 +57,5 @@ const items = await fetchItemsWithParams(parsed.data);
     </ul>
   </div>
   <!-- TODO(char5742): Implement pagination -->
-  <!-- <ItemPagination client:load currentPage={items.metadata.currentPage} /> -->
+  <Pagination page={items} />
 </Layout>
