@@ -1,7 +1,9 @@
 ---
+// export const prerender = true によりSSGモードになる
 export const prerender = true;
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemList } from '@/services/item_service';
+import { fetchOptions } from '@/services/option_service';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async () => {
@@ -13,8 +15,26 @@ export const getStaticPaths = (async () => {
     props: { item },
   }));
 }) satisfies GetStaticPaths;
+
 const item = Astro.props.item;
-console.log(item);
+const options = await fetchOptions();
+const foodOptions = options.filter((option) => option.name.startsWith('エサ'));
+const toiletOptions = options.filter((option) =>
+  option.name.startsWith('トイレ')
+);
+const cageOptions = options.filter((option) =>
+  option.name.startsWith('ケージ')
+);
+const bedOptions = options.filter((option) => option.name.startsWith('ベッド'));
+const collarOptions = options.filter((option) =>
+  option.name.startsWith('首輪')
+);
+const toyOptions = options.filter((option) =>
+  option.name.startsWith('おもちゃ')
+);
+const careOptions = options.filter((option) =>
+  ['ブラシ', 'シャンプー', '爪切り'].includes(option.name)
+);
 ---
 
 <Layout title="ペット詳細">
@@ -58,7 +78,8 @@ console.log(item);
                   </p>
                 </div>
 
-                <form method="post">
+                <form method="post" action="/api/cart" id="addShoppingCart">
+                  <input type="hidden" name="itemId" value={item.id} />
                   <h2 class="mt-8 text-base text-gray-900">フード</h2>
                   <div class="mt-3 flex select-none flex-wrap items-center gap-1">
                     <label>
@@ -73,39 +94,19 @@ console.log(item);
                         なし
                       </p>
                     </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="food"
-                        value="foodA"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        フードA
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="food"
-                        value="foodB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        フードB
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="food"
-                        value="foodC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        フードC
-                      </p>
-                    </label>
+                    {foodOptions.map((option) => (
+                      <label>
+                        <input
+                          type="radio"
+                          name="food"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">トイレ</h2>
@@ -122,39 +123,19 @@ console.log(item);
                         なし
                       </p>
                     </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="toilet"
-                        value="toiletA"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        トイレA
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="toilet"
-                        value="toiletB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        トイレB
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="toilet"
-                        value="toiletC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        トイレC
-                      </p>
-                    </label>
+                    {toiletOptions.map((option) => (
+                      <label>
+                        <input
+                          type="radio"
+                          name="toilet"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">ケージ</h2>
@@ -171,39 +152,19 @@ console.log(item);
                         なし
                       </p>
                     </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="cage"
-                        value="cageA"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ケージA
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="cage"
-                        value="cageB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ケージB
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="cage"
-                        value="cageC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ケージC
-                      </p>
-                    </label>
+                    {cageOptions.map((option) => (
+                      <label>
+                        <input
+                          type="radio"
+                          name="cage"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">ベッド</h2>
@@ -220,39 +181,19 @@ console.log(item);
                         なし
                       </p>
                     </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="bed"
-                        value="bedA"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ベッドA
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="bed"
-                        value="bedB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ベッドB
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="bed"
-                        value="bedC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ベッドC
-                      </p>
-                    </label>
+                    {bedOptions.map((option) => (
+                      <label>
+                        <input
+                          type="radio"
+                          name="bed"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">首輪</h2>
@@ -269,119 +210,57 @@ console.log(item);
                         なし
                       </p>
                     </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="collar"
-                        value="collarA"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        首輪A
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="collar"
-                        value="collarB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        首輪B
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="collar"
-                        value="collarC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        首輪C
-                      </p>
-                    </label>
+                    {collarOptions.map((option) => (
+                      <label>
+                        <input
+                          type="radio"
+                          name="collar"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">
                     おもちゃ(複数選択可能)
                   </h2>
                   <div class="mt-3 flex select-none flex-wrap items-center gap-1">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="toyA"
-                        value="toyA"
-                        class="peer sr-only"
-                        checked
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        おもちゃA
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="toyB"
-                        value="toyB"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        おもちゃB
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="toyC"
-                        value="toyC"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        おもちゃC
-                      </p>
-                    </label>
+                    {toyOptions.map((option) => (
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="toy"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <h2 class="mt-8 text-base text-gray-900">
                     お手入れ用品(複数選択可能)
                   </h2>
                   <div class="mt-3 flex select-none flex-wrap items-center gap-1">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="careBrush"
-                        value="careBrush"
-                        class="peer sr-only"
-                        checked
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        ブラシ
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="careShampoo"
-                        value="careShampoo"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        シャンプー
-                      </p>
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="careNailCutter"
-                        value="careNailCutter"
-                        class="peer sr-only"
-                      />
-                      <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                        爪切り
-                      </p>
-                    </label>
+                    {careOptions.map((option) => (
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="care"
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
                   </div>
 
                   <div class="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
