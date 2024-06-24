@@ -14,6 +14,6 @@ export const createUser = async (user: CreateUserForm) => {
   }
   return {
     success: false,
-    errors: await response.json().then((data) => data.errors),
+    errors: await response.json(),
   };
 };
