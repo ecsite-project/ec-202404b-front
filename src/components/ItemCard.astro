@@ -11,7 +11,10 @@ const { item } = Astro.props;
 <div
   class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
 >
-  <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
+  <a
+    class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+    href={'/items/' + item.id}
+  >
     <img
       class="object-cover"
       src="images/cat3.jpg"
