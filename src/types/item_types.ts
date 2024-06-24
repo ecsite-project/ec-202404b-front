@@ -1,12 +1,12 @@
 import { z } from 'astro/zod';
-
 import { PageSchema } from './page_types';
 
-export const ColorSchema = z.object({
+export const BreedSchema = z.object({
   id: z.string(),
   name: z.string(),
 });
-export const BreedSchema = z.object({
+
+export const ColorSchema = z.object({
   id: z.string(),
   name: z.string(),
 });
