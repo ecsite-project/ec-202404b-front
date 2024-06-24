@@ -1,6 +1,6 @@
-import { OrderListSchema, type Order } from '@/types/order_types';
+import { OrderSchema, type Order } from '@/types/order_types';
 
-export const fetchCart = async (id: string): Promise<Order[]> => {
+export const fetchCart = async (id: string): Promise<Order> => {
   const response = await fetch(
     `http://localhost:8080/api/shoppingCart/getShoppingCart`,
     {
@@ -16,6 +16,6 @@ export const fetchCart = async (id: string): Promise<Order[]> => {
     throw new Error(await response.text());
   }
   const data = await response.json();
-  const parsed = OrderListSchema.parse(data);
+  const parsed = OrderSchema.parse(data);
   return parsed;
 };
