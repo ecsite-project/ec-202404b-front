@@ -1,0 +1,16 @@
+---
+interface Props {
+  page: number;
+}
+
+const { page } = Astro.props;
+---
+
+<form method="get">
+  <input type="hidden" name="p" value={page} />
+  <button
+    class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+  >
+    {page}
+  </button>
+</form>

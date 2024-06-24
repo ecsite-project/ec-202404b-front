@@ -27,7 +27,7 @@ export const SearchBox = ({
       <input
         className="text-right"
         type="number"
-        name="minPrice"
+        name="min"
         value={minPrice}
         onChange={(e) => setMinPrice(Number.parseInt(e.target.value))}
       />
@@ -35,7 +35,7 @@ export const SearchBox = ({
       <input
         className="text-right"
         type="number"
-        name="maxPrice"
+        name="max"
         value={maxPrice}
         onChange={(e) => setMaxPrice(Number.parseInt(e.target.value))}
       />

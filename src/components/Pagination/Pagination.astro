@@ -1,0 +1,47 @@
+---
+import type { ItemPage } from '@/types/item_types';
+import PageLink from './PageLink.astro';
+
+export interface Props {
+  page: ItemPage;
+}
+
+const { page } = Astro.props;
+const currentPage = page.metadata.currentPage;
+const lastPage = page.metadata.lastPage;
+console.log({ currentPage, lastPage });
+---
+
+<div class="flex justify-center space-x-2">
+  {
+    currentPage > 1 && (
+      <form method="get">
+        <input type="hidden" name="p" value={currentPage - 1} />
+        <button class="bg-black hover:bg-gray-700 text-white bg-gray- font-bold py-2 px-4 rounded">
+          前へ
+        </button>
+      </form>
+    )
+  }
+
+  {currentPage > 2 && <PageLink page={currentPage - 2} />}
+  {currentPage > 1 && <PageLink page={currentPage - 1} />}
+
+  <span class="bg-gray-300 text-black font-bold py-2 px-4 rounded">
+    {currentPage}
+  </span>
+
+  {currentPage < lastPage && <PageLink page={currentPage + 1} />}
+  {currentPage < lastPage - 1 && <PageLink page={currentPage + 2} />}
+
+  {
+    currentPage < lastPage && (
+      <form method="get">
+        <input type="hidden" name="p" value={currentPage + 1} />
+        <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+          次へ
+        </button>
+      </form>
+    )
+  }
+</div>
