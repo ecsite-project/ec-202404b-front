@@ -1,0 +1,60 @@
+---
+import ItemCard from '@/components/ItemCard.astro';
+import { SearchBox } from '@/components/SearchBox';
+import Layout from '@/layouts/Layout.astro';
+import { fetchItemsWithParams } from '@/services/item_service';
+import { SearchQuerySchema } from '@/types/item_types';
+
+const params = Astro.url.searchParams;
+
+const query = {
+  search: {
+    maxPrice: params.get('max') ?? 500_000,
+    minPrice: params.get('min') ?? 50_000,
+    colorList: params.getAll('color'),
+    breedId: params.get('breed') ?? '',
+  },
+  page: {
+    currentPage: params.get('p') ?? 1,
+    perPage: 12,
+  },
+};
+const parsed = SearchQuerySchema.safeParse(query);
+if (!parsed.success) {
+  return new Response(null, {
+    status: 400,
+    statusText: 'Bad Request',
+  });
+}
+
+const items = await fetchItemsWithParams(parsed.data);
+---
+
+<Layout title="ペット一覧">
+  <h1>ペット一覧</h1>
+  <div class="m-4">
+    <SearchBox
+      client:only="react"
+      defaultValues={{
+        maxPrice: parsed.data.search.maxPrice,
+        minPrice: parsed.data.search.minPrice,
+        colorList: parsed.data.search.colorList,
+        breedId: parsed.data.search.breedId,
+      }}
+    />
+  </div>
+
+  <div class="flex justify-center">
+    <ul class="grid grid-cols-2">
+      {
+        items.records.map((item) => (
+          <li>
+            <ItemCard item={item} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <!-- TODO(char5742): Implement pagination -->
+  <!-- <ItemPagination client:load currentPage={items.metadata.currentPage} /> -->
+</Layout>

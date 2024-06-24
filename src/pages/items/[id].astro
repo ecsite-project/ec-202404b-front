@@ -1,0 +1,78 @@
+---
+export const prerender = true;
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import Layout from '@/layouts/Layout.astro';
+import { fetchItemList } from '@/services/item_service';
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+
+export const getStaticPaths = (async () => {
+  const itemList = await fetchItemList();
+  return itemList.map((item) => ({
+    params: {
+      id: item.id.toString(),
+    },
+    props: { item },
+  }));
+}) satisfies GetStaticPaths;
+const item = Astro.props.item;
+---
+
+<Layout title="ペット詳細">
+  {
+    item ? (
+      <div class="flex items-center justify-center mt-10">
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>{item.breed.name}</CardTitle>
+            <CardDescription>{item.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Image
+              src={'http://localhost:8080/img/' + item.image}
+              alt="pet image"
+              width="200"
+              height="200"
+            />
+            <p>{item.price}円</p>
+            <p>{item.gender}</p>
+            <p>{item.birthDay}</p>
+            <p>{item.color}</p>
+            {/* <p>{item.weight}kg</p> */}
+          </CardContent>
+          <CardFooter>
+            <form method="post">
+              <input type="hidden" name="item" value={item.id} />
+              <div class="food">
+                <input type="radio" name="food" id="foodA" />
+                foodA
+                <input type="radio" name="food" id="foodB" />
+                foodB
+                <input type="radio" name="food" id="foodC" />
+                foodC
+              </div>
+              <div class="toy">
+                <input type="checkbox" name="toy" id="toyA" />
+                toyA
+                <input type="checkbox" name="toy" id="toyB" />
+                toyB
+              </div>
+              <button type="submit">カートに入れる</button>
+            </form>
+          </CardFooter>
+        </Card>
+      </div>
+    ) : (
+      <>
+        <p>Item not found</p>
+      </>
+    )
+  }
+</Layout>

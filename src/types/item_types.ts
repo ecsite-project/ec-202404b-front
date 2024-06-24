@@ -1,4 +1,5 @@
 import { z } from 'astro/zod';
+import { PageSchema } from './page_types';
 
 export const BreedSchema = z.object({
   id: z.string(),
@@ -14,8 +15,9 @@ export const ItemSchema = z.object({
   id: z.string(),
   description: z.string(),
   price: z.number(),
-  birthDay: z.string(),
+  birthDay: z.coerce.date(),
   image: z.string(),
+  deleted: z.boolean(),
   gender: z.string(),
   breed: BreedSchema,
   color: ColorSchema,
@@ -23,4 +25,26 @@ export const ItemSchema = z.object({
 
 export type Item = z.infer<typeof ItemSchema>;
 
+// ItemのPageスキーマ
+export const ItemPageSchema = PageSchema(ItemSchema);
+
+export type ItemPage = z.infer<typeof ItemPageSchema>;
+
 export const ItemListSchema = z.array(ItemSchema);
+
+export type ItemList = z.infer<typeof ItemListSchema>;
+
+export const SearchQuerySchema = z.object({
+  search: z.object({
+    maxPrice: z.coerce.number(),
+    minPrice: z.coerce.number(),
+    colorList: z.array(z.string()),
+    breedId: z.string(),
+  }),
+  page: z.object({
+    currentPage: z.coerce.number(),
+    perPage: z.coerce.number(),
+  }),
+});
+
+export type SearchQuery = z.infer<typeof SearchQuerySchema>;
