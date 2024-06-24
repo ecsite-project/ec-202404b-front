@@ -8,7 +8,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { fetchCart } from '@/services/cart_service';
-import items from '@/services/items.json';
 import Layout from '../layouts/Layout.astro';
 const id = Astro.locals.user
   ? Astro.locals.user.id
@@ -17,7 +16,8 @@ const id = Astro.locals.user
 if (!id) {
   throw new Error('failed to fetch userId');
 }
-const cart = await fetchCart(id);
+const orderItems = await fetchCart(id);
+console.log(orderItems);
 ---
 
 <Layout title="カート画面">
@@ -33,19 +33,27 @@ const cart = await fetchCart(id);
     </TableHeader>
     <TableBody>
       {
-        items.map((item) => (
+        orderItems.map((orderItem) => (
           <TableRow>
-            <TableCell className="font-medium">{item.breed}</TableCell>
-            <TableCell>ワクワクセット</TableCell>
-            <TableCell>{item.price}</TableCell>
-            <TableCell className="text-right">{item.price}</TableCell>
+            <TableCell className="font-medium">
+              {orderItem.item.breed.name}
+            </TableCell>
+            <TableCell />
+            <TableCell>{orderItem.item.price}</TableCell>
+            <TableCell className="text-right" />
             <TableCell>
-              <button>削除</button>
+              <form method="post">
+                <button type="submit" id="deleteCart">
+                  削除
+                </button>
+              </form>
             </TableCell>
           </TableRow>
         ))
       }
     </TableBody>
   </Table>
-  <button>注文に進む</button>
+  <form method="post">
+    <button type="submit">注文に進む</button>
+  </form>
 </Layout>

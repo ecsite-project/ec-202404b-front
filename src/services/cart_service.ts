@@ -1,6 +1,6 @@
-import { OrderListSchema, type Order } from '@/types/order_types';
+import { OrderItemListSchema, type OrderItem } from '@/types/orderItem_types';
 
-export const fetchCart = async (id: string): Promise<Order[]> => {
+export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
   const response = await fetch(
     `http://localhost:8080/api/shoppingCart/getShoppingCart`,
     {
@@ -8,7 +8,7 @@ export const fetchCart = async (id: string): Promise<Order[]> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: id }),
+      body: JSON.stringify({ userId: userId }),
     }
   );
 
@@ -16,6 +16,7 @@ export const fetchCart = async (id: string): Promise<Order[]> => {
     throw new Error(await response.text());
   }
   const data = await response.json();
-  const parsed = OrderListSchema.parse(data);
+
+  const parsed = OrderItemListSchema.parse(data.orderItems);
   return parsed;
 };
