@@ -41,7 +41,7 @@ const { item } = Astro.props;
     }
   </a>
   <div class="mt-4 px-5 pb-5">
-    <a href="#">
+    <a href={'/items/' + item.id}>
       <h5 class="text-xl tracking-tight text-slate-900 flex justify-center">
         {item.breed.name}
       </h5>
