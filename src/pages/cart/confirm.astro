@@ -21,8 +21,8 @@ import { OrderItemListSchema } from '@/types/order_item_types';
 let error: CreateOrderFormError | undefined;
 let form: Partial<CreateOrderForm> | undefined;
 
-const id = Astro.locals.user?.id;
-if (!id) {
+const user = Astro.locals.user;
+if (!user) {
   return Astro.redirect('/auth/login');
 }
 
@@ -36,7 +36,7 @@ if (Astro.request.method === 'POST') {
   const data = Object.fromEntries(formData);
   if (parsed.success) {
     await finalizeOrder(
-      id,
+      user.jwt,
       parsed.data,
       orderItems.map((item) => item.id)
     );
@@ -46,7 +46,7 @@ if (Astro.request.method === 'POST') {
   }
 }
 
-const orderItems = await fetchCart(id);
+const orderItems = await fetchCart(user.id);
 ---
 
 <Layout title="カート画面">
