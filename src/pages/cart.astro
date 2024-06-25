@@ -1,0 +1,58 @@
+---
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { fetchCart } from '@/services/cart_service';
+import Layout from '../layouts/Layout.astro';
+const id = Astro.locals.user
+  ? Astro.locals.user.id
+  : Astro.locals.anonymous?.uid;
+
+if (!id) {
+  throw new Error('failed to fetch userId');
+}
+const orderItems = await fetchCart(id);
+---
+
+<Layout title="カート画面">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">商品</TableHead>
+        <TableHead>追加オプション</TableHead>
+        <TableHead>価格</TableHead>
+        <TableHead className="text-right">小計</TableHead>
+        <TableHead />
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {
+        orderItems.map((orderItem) => (
+          <TableRow>
+            <TableCell className="font-medium">
+              {orderItem.item.breed.name}
+            </TableCell>
+            <TableCell />
+            <TableCell>{orderItem.item.price}</TableCell>
+            <TableCell className="text-right" />
+            <TableCell>
+              <form method="post">
+                <button type="submit" id="deleteCart">
+                  削除
+                </button>
+              </form>
+            </TableCell>
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
+  <form method="post">
+    <button type="submit">注文に進む</button>
+  </form>
+</Layout>
