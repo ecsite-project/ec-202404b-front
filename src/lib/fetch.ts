@@ -3,6 +3,10 @@ export const fetchWithToken = async (
   token?: string,
   init?: RequestInit
 ): Promise<Response> => {
+  if (!token) {
+    throw new AuthorizeError();
+  }
+
   const headers = new Headers(init?.headers);
   headers.set('Authorization', `Bearer ${token}`);
   const response = await fetch(url, { ...init, headers });
