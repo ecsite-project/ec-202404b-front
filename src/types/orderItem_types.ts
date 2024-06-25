@@ -1,6 +1,5 @@
 import { z } from 'astro/zod';
-import { ItemSchema } from './item_types';
-import { OptionSchema } from './option_type';
+import { ItemSchema, OptionSchema } from './item_types';
 export const OrderItemSchema = z.object({
   id: z.string(),
   item: ItemSchema,
