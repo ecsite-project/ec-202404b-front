@@ -1,33 +1,20 @@
 import { addShoppingCart } from '@/services/order_service';
 import type { APIRoute } from 'astro';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals, redirect }) => {
   const formData = await request.formData();
-
+  const options = [...formData.entries()]
+    .filter(([key, value]) => key !== 'itemId' && value !== 'none')
+    .map(([key, value]) => value as string);
   const itemId = formData.get('itemId') as string | null;
-  const food = formData.get('food') as string | null;
-  const toilet = formData.get('toilet') as string | null;
-  const cage = formData.get('cage') as string | null;
-  const bed = formData.get('bed') as string | null;
-  const collar = formData.get('collar') as string | null;
-  const toys = formData.getAll('toy') as string[];
-  const cares = formData.getAll('care') as string[];
-
-  const options = [
-    food,
-    toilet,
-    cage,
-    bed,
-    collar,
-    ...toys,
-    ...cares,
-  ] as string[];
-
   if (!itemId) {
     throw new Error('failed to fetch itemId');
   }
   const optionIdList = options.filter((option) => option !== 'none');
-
-  const result = await addShoppingCart(itemId, options);
-  return new Response(JSON.stringify(result), { status: 200 });
+  const userId = locals.user?.id ?? locals.anonymous?.uid;
+  if (!userId) {
+    throw new Error('failed to fetch userId');
+  }
+  const result = await addShoppingCart(userId, itemId, options);
+  return redirect('/cart');
 };
