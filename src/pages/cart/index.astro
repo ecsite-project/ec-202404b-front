@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { fetchCart } from '@/services/cart_service';
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 const id = Astro.locals.user
   ? Astro.locals.user.id
   : Astro.locals.anonymous?.uid;
@@ -52,7 +52,7 @@ const orderItems = await fetchCart(id);
       }
     </TableBody>
   </Table>
-  <form method="post">
+  <form method="get" action="/cart/confirm">
     <button type="submit">注文に進む</button>
   </form>
 </Layout>

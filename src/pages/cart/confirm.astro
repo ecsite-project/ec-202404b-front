@@ -1,0 +1,332 @@
+---
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { fetchCart } from '@/services/cart_service';
+import type {
+  CreateOrderForm,
+  CreateOrderFormError,
+} from '@/types/order_types';
+import { CreateOrderFormSchema, TimeRange } from '@/types/order_types';
+import Layout from '@/layouts/Layout.astro';
+import { Button } from '@/components/ui/button';
+
+let error: CreateOrderFormError | undefined;
+let form: Partial<CreateOrderForm> | undefined;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  form = Object.fromEntries(formData);
+  const parsed = CreateOrderFormSchema.safeParse(Object.fromEntries(formData));
+  const orderItems = JSON.parse(formData.get('orderItems')?.toString() ?? '[]');
+  const data = Object.fromEntries(formData);
+  if (parsed.success) {
+    console.log(data);
+  } else {
+    error = parsed.error?.format();
+  }
+}
+
+const id = Astro.locals.user
+  ? Astro.locals.user.id
+  : Astro.locals.anonymous?.uid;
+if (!id) {
+  throw new Error('failed to fetch userId');
+}
+const orderItems = await fetchCart(id);
+---
+
+<Layout title="カート画面">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">商品</TableHead>
+        <TableHead>追加オプション</TableHead>
+        <TableHead>価格</TableHead>
+        <TableHead className="text-right">小計</TableHead>
+        <TableHead />
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {
+        orderItems.map((orderItem) => (
+          <TableRow>
+            <TableCell className="font-medium">
+              {orderItem.item.breed.name}
+            </TableCell>
+            <TableCell />
+            <TableCell>{orderItem.item.price}</TableCell>
+            <TableCell className="text-right" />
+            <TableCell>
+              <form method="post">
+                <button type="submit" id="deleteCart">
+                  削除
+                </button>
+              </form>
+            </TableCell>
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
+  <div class="mb-16">
+    <form method="post" class="max-w-md mx-auto">
+      <p class="text-2xl mb-4 text-center">お届け先</p>
+      <Button id="complete-userinfo">ログイン者情報を入力</Button>
+      <div class="relative z-0 w-full mb-5 mt-8 group">
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={form?.name}
+          class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="name"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >お名前</label
+        >
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.name?._errors}
+        </p>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value={form?.email}
+          class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >メールアドレス</label
+        >
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.email?._errors}
+        </p>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="tel"
+          name="telephone"
+          id="telephone"
+          value={form?.telephone}
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="telephone"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >電話番号</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.telephone?._errors}
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="zipcode"
+            id="zipcode"
+            value={form?.zipcode}
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+          />
+          <label
+            for="zipcode"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >郵便番号</label
+          ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {error?.zipcode?._errors}
+          </p>
+        </div>
+        <button id="zipcode-complete" type="button"> 住所検索</button>
+      </div>
+      <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="prefecture"
+            id="prefecture"
+            value={form?.prefecture}
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+          />
+          <label
+            for="prefecture"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >都道府県</label
+          ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {error?.prefecture?._errors}
+          </p>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="municipalities"
+            id="municipalities"
+            value={form?.municipalities}
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+          />
+          <label
+            for="municipalities"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >市区町村</label
+          ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {error?.municipalities?._errors}
+          </p>
+        </div>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="text"
+          name="address"
+          id="address"
+          value={form?.address}
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="address"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >住所</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.address?._errors}
+        </p>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="date"
+          name="deliveryDate"
+          id="deliveryDate"
+          value={form?.deliveryDate}
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="address"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >配達日時</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.deliveryDate?._errors}
+        </p>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <label
+          for="deliveryTime"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >配達時間</label
+        >
+        {
+          Object.entries(TimeRange).map(([key, value]) => (
+            <label>
+              <input
+                type="radio"
+                name="deliveryTime"
+                value={key}
+                checked={form?.deliveryTime === key}
+                id="deliveryTime"
+              />
+              {value}
+            </label>
+          ))
+        }
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error?.deliveryTime?._errors}
+        </p>
+      </div>
+      <div class="flex justify-center">
+        <button
+          type="submit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-cente dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >購入する</button
+        >
+      </div>
+      <input
+        type="hidden"
+        name="orderItems"
+        value={JSON.stringify(orderItems)}
+      />
+    </form>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const zipcode = document.querySelector('#zipcode') as HTMLInputElement;
+    const prefecture = document.querySelector(
+      '#prefecture'
+    ) as HTMLInputElement;
+    const municipalities = document.querySelector(
+      '#municipalities'
+    ) as HTMLInputElement;
+    const address = document.querySelector('#address') as HTMLInputElement;
+    const button = document.querySelector(
+      '#zipcode-complete'
+    ) as HTMLInputElement;
+
+    button?.addEventListener('click', async () => {
+      const response = await fetch(
+        `https://zipcoda.net/api?zipcode=${zipcode.value}`
+      );
+      const data = await response.json();
+      const components = data.items[0].components;
+      if (prefecture) {
+        prefecture.value = components[0];
+      }
+      if (municipalities) {
+        municipalities.value = components[1];
+      }
+      if (address) {
+        address.value = components[2];
+      }
+    });
+
+    const completeUserinfo = document.querySelector(
+      '#complete-userinfo'
+    ) as HTMLButtonElement;
+
+    completeUserinfo?.addEventListener('click', async () => {
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      if (data) {
+        const name = document.querySelector('#name') as HTMLInputElement;
+        const email = document.querySelector('#email') as HTMLInputElement;
+        const telephone = document.querySelector(
+          '#telephone'
+        ) as HTMLInputElement;
+        const zipcode = document.querySelector('#zipcode') as HTMLInputElement;
+        const prefecture = document.querySelector(
+          '#prefecture'
+        ) as HTMLInputElement;
+        const municipalities = document.querySelector(
+          '#municipalities'
+        ) as HTMLInputElement;
+        const address = document.querySelector('#address') as HTMLInputElement;
+
+        name.value = data.name;
+        email.value = data.email;
+        telephone.value = data.telephone;
+        zipcode.value = data.zipcode;
+        prefecture.value = data.prefecture;
+        municipalities.value = data.municipalities;
+        address.value = data.address;
+      }
+    });
+  });
+</script>

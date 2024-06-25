@@ -1,4 +1,4 @@
-import { addShoppingCart } from '@/services/order_service';
+import { addToCart } from '@/services/cart_service';
 import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request, locals, redirect }) => {
@@ -15,6 +15,6 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
   if (!userId) {
     throw new Error('failed to fetch userId');
   }
-  const result = await addShoppingCart(userId, itemId, options);
+  const result = await addToCart(userId, itemId, options);
   return redirect('/cart');
 };
