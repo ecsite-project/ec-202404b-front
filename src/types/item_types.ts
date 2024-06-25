@@ -1,12 +1,12 @@
 import { z } from 'astro/zod';
-
 import { PageSchema } from './page_types';
 
-export const ColorSchema = z.object({
+export const BreedSchema = z.object({
   id: z.string(),
   name: z.string(),
 });
-export const BreedSchema = z.object({
+
+export const ColorSchema = z.object({
   id: z.string(),
   name: z.string(),
 });
@@ -48,3 +48,26 @@ export const SearchQuerySchema = z.object({
 });
 
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
+
+export const OptionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+});
+
+export const OptionListSchema = z.array(OptionSchema);
+export type OptionList = z.infer<typeof OptionListSchema>;
+
+const optionGroupSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  inputType: z.enum(['text', 'radio', 'checkbox']),
+  options: OptionListSchema,
+});
+
+export const ItemDetailSchema = z.object({
+  item: ItemSchema,
+  optionGroup: z.array(optionGroupSchema),
+});
+
+export type ItemDetail = z.infer<typeof ItemDetailSchema>;

@@ -1,7 +1,9 @@
 import { fetchWithCache } from '@/lib/chche';
 import {
+  ItemDetailSchema,
   ItemListSchema,
   ItemPageSchema,
+  type ItemDetail,
   type ItemList,
   type ItemPage,
   type SearchQuery,
@@ -16,6 +18,17 @@ export const fetchItemList = async (): Promise<ItemList> => {
   }
   const data = await response.json();
   const parsed = ItemListSchema.parse(data);
+
+  return parsed;
+};
+
+export const fetchItemDetail = async (id: string): Promise<ItemDetail> => {
+  const response = await fetch(`http://localhost:8080/showDetail?id=${id}`);
+  if (!response.ok) {
+    throw new Error('failed to fetch items');
+  }
+  const data = await response.json();
+  const parsed = ItemDetailSchema.parse(data);
 
   return parsed;
 };

@@ -18,9 +18,9 @@ const { item } = Astro.props;
   >
     <img
       class="object-cover"
-      src="images/cat3.jpg"
+      src="/images/{item.image}"
       alt="item_image"
-      onerror="this.src='images/no_data.png'"
+      onerror="this.src='/images/no_data.png'"
     />
     {
       item.gender == 'male' ? (
@@ -42,7 +42,7 @@ const { item } = Astro.props;
     }
   </a>
   <div class="mt-4 px-5 pb-5">
-    <a href="#">
+    <a href={'/items/' + item.id}>
       <h5 class="text-xl tracking-tight text-slate-900 flex justify-center">
         {item.breed.name}
       </h5>
