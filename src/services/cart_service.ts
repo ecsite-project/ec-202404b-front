@@ -11,7 +11,6 @@ export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
       body: JSON.stringify({ userId: userId }),
     }
   );
-  console.log(response);
   if (!response.ok) {
     throw new Error(await response.text());
   }

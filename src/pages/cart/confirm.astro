@@ -36,9 +36,7 @@ if (Astro.request.method === 'POST') {
     JSON.parse(formData.get('orderItems')?.toString() ?? '[]')
   );
   const data = Object.fromEntries(formData);
-  console.log(parsed.error);
   if (parsed.success) {
-    console.log(data);
     await finalizeOrder(
       id,
       parsed.data,
