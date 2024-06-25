@@ -57,10 +57,10 @@ console.log(orderItems);
                               {orderItem.item.breed.name}
                             </p>
                             <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">
-                              {new Date(
-                                orderItem.item.birthDay
-                              ).toLocaleDateString()}{' '}
-                              うまれ
+                              {orderItem.options.map((option) => (
+                                <span>{option.name} </span>
+                                <span>￥{option.price}</span> <br/>
+                              ))}
                             </p>
                           </div>
 
