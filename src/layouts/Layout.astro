@@ -5,13 +5,13 @@ import '@/styles/globals.css';
 import { ViewTransitions } from 'astro:transitions';
 interface Props {
   title: string;
-  showFooter: boolean;
+  showFooter?: boolean;
 }
 
 const { title, showFooter = true } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
