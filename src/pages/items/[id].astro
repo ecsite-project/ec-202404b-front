@@ -33,11 +33,12 @@ const item = detail.item;
               <div class="lg:col-span-3 lg:row-end-1">
                 <div class="lg:flex lg:justify-center">
                   <div class="max-w-xl h-96 overflow-hidden rounded-lg">
-                    <img
+                      <img
+                      transition:name={item.id}
                       class="h-full w-full max-w-full object-cover"
-                      src="/images/dog3.jpg"
-                      alt=""
-                      onerror="this.src='/images/no_data.png'"
+                      src="/images/cat3.jpg"
+                      alt="item_image"
+                      onerror="this.src='images/no_data.png'"
                     />
                   </div>
                 </div>
