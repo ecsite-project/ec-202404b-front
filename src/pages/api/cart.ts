@@ -27,7 +27,6 @@ export const POST: APIRoute = async ({ request }) => {
     throw new Error('failed to fetch itemId');
   }
   const optionIdList = options.filter((option) => option !== 'none');
-  console.log({ itemId, optionIdList });
 
   const result = await addShoppingCart(itemId, options);
   return new Response(JSON.stringify(result), { status: 200 });
