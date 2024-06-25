@@ -17,7 +17,9 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const item = Astro.props.item;
+
 const options = await fetchOptions();
+
 const foodOptions = options.filter((option) => option.name.startsWith('エサ'));
 const toiletOptions = options.filter((option) =>
   option.name.startsWith('トイレ')
@@ -265,7 +267,7 @@ const careOptions = options.filter((option) =>
 
                   <div class="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                     <div class="flex items-end">
-                      <h1 class="text-3xl font-bold">￥{item.price}</h1>
+                      <p>{new Intl.NumberFormat().format(item.price)}円</p>
                     </div>
 
                     <button

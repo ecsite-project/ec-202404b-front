@@ -1,9 +1,28 @@
 import { Slider } from '@/components/ui/slider';
 import { useState } from 'react';
 
-// color, price, breed,
-const colors = ['red', 'blue', 'green', 'yellow', 'black', 'white'];
-const breeds = ['poodle', 'bulldog', 'beagle', 'pug', 'shiba'];
+const colors = [
+  'Black',
+  'White',
+  'Brown',
+  'Golden',
+  'Gray',
+  'Red',
+  'Cream',
+  'Fawn',
+  'Blue',
+];
+const breeds = [
+  'Shiba Inu',
+  'Labrador Retriever',
+  'German Shepherd',
+  'Golden Retriever',
+  'Bulldog',
+  'Poodle',
+  'Beagle',
+  'Chihuahua',
+  'Dachshund',
+];
 export const SearchBox = ({
   defaultValues,
 }: {
@@ -11,7 +30,7 @@ export const SearchBox = ({
     minPrice: number;
     maxPrice: number;
     colorList: string[];
-    breedId: string | null;
+    breed: string | null;
   };
 }) => {
   const [minPrice, setMinPrice] = useState(defaultValues.minPrice);

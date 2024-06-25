@@ -13,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
   const toys = formData.getAll('toy') as string[];
   const cares = formData.getAll('care') as string[];
 
-  const optionIdList = [
+  const options = [
     food,
     toilet,
     cage,
@@ -26,8 +26,9 @@ export const POST: APIRoute = async ({ request }) => {
   if (!itemId) {
     throw new Error('failed to fetch itemId');
   }
+  const optionIdList = options.filter((option) => option !== 'none');
   console.log({ itemId, optionIdList });
 
-  const result = await addShoppingCart(itemId, optionIdList);
+  const result = await addShoppingCart(itemId, options);
   return new Response(JSON.stringify(result), { status: 200 });
 };
