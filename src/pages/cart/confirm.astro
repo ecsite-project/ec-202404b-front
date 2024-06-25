@@ -45,7 +45,6 @@ if (Astro.request.method === 'POST') {
     return Astro.redirect('/cart/complete');
   } else {
     error = parsed.error?.format();
-    throw new Error(parsed.error.toString() ?? '');
   }
 }
 
