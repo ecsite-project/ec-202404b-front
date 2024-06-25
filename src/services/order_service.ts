@@ -1,22 +1,17 @@
-export const addShoppingCart = async (
+import { type CreateOrderForm } from '@/types/order_types';
+
+export const finalizeOrder = async (
   userId: string,
-  itemId: string,
-  optionIdList: string[]
-) => {
-  const response = await fetch(
-    `http://localhost:8080/api/shoppingCart/addItem`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId,
-        itemId,
-        optionIdList,
-      }),
-    }
-  );
+  form: CreateOrderForm,
+  orderItemIdList: string[]
+): Promise<void> => {
+  const response = await fetch(`http://localhost:8080/api/confirm/finalize`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ form: { userId, ...form, orderItemIdList } }),
+  });
 
   if (!response.ok) {
     throw new Error(await response.text());

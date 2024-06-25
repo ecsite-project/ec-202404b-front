@@ -1,7 +1,6 @@
 ---
+import Layout from '@/layouts/Layout.astro';
 import { fetchCart } from '@/services/cart_service';
-import Layout from '../layouts/Layout.astro';
-
 const id = Astro.locals.user
   ? Astro.locals.user.id
   : Astro.locals.anonymous?.uid;
