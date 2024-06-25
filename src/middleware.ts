@@ -71,5 +71,4 @@ export const anonymous = defineMiddleware(async (context, next) => {
   }
   return next();
 });
-
 export const onRequest = sequence(auth, routing, jwt, anonymous);
