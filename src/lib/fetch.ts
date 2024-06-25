@@ -1,6 +1,6 @@
 export const fetchWithToken = async (
   url: string,
-  token: string,
+  token?: string,
   init?: RequestInit
 ): Promise<Response> => {
   const headers = new Headers(init?.headers);
