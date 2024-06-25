@@ -273,7 +273,7 @@ const orderItems = await fetchCart(id);
 </Layout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('astro:page-load', function () {
     const zipcode = document.querySelector('#zipcode') as HTMLInputElement;
     const prefecture = document.querySelector(
       '#prefecture'
