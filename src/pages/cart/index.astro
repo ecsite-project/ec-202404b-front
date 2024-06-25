@@ -1,6 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import ja from '@/locales/ja.json';
+import type { Translations } from '@/locales/locales';
 import { fetchCart } from '@/services/cart_service';
+const t: Translations = ja;
 const id = Astro.locals.user
   ? Astro.locals.user.id
   : Astro.locals.anonymous?.uid;
@@ -21,9 +24,7 @@ const totalOptionsPrice = orderItems
       .reduce((acc, cur) => acc + cur, 0)
   )
   .reduce((acc, cur) => acc + cur, 0);
-console.log(totalOptionsPrice);
-
-console.log(orderItems);
+console.log(orderItems[0].options);
 ---
 
 <Layout title="カート画面">
@@ -53,13 +54,13 @@ console.log(orderItems);
                         <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
                           <div class="pr-8 sm:pr-5">
                             <p class="text-base font-semibold text-gray-900">
-                              {orderItem.item.breed.name}
+                              {t[orderItem.item.breed.name]}
                             </p>
                             <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">
-                              {new Date(
-                                orderItem.item.birthDay
-                              ).toLocaleDateString()}{' '}
-                              うまれ
+                              {orderItem.options.map(option =>(
+                                <span>{option.name} </span>
+                                <span>￥{option.price}</span> <br />
+                              ))}
                             </p>
                           </div>
 

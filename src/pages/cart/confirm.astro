@@ -17,6 +17,9 @@ import Layout from '@/layouts/Layout.astro';
 import { Button } from '@/components/ui/button';
 import { finalizeOrder } from '@/services/order_service';
 import { OrderItemListSchema } from '@/types/order_item_types';
+import ja from '@/locales/ja.json';
+import type { Translations } from '@/locales/locales';
+const t: Translations = ja;
 
 let error: CreateOrderFormError | undefined;
 let form: Partial<CreateOrderForm> | undefined;
@@ -68,7 +71,7 @@ const orderItems = await fetchCart(id);
         orderItems.map((orderItem) => (
           <TableRow>
             <TableCell className="font-medium">
-              {orderItem.item.breed.name}
+              {t[orderItem.item.breed.name]}
             </TableCell>
             <TableCell />
             <TableCell>{orderItem.item.price}</TableCell>

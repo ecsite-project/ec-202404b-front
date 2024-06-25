@@ -1,5 +1,8 @@
 ---
 import type { Item } from '@/types/item_types';
+import type { Translations } from '@/locales/locales';
+import ja from '@/locales/ja.json';
+const t: Translations = ja;
 
 interface Props {
   item: Item;
@@ -41,7 +44,7 @@ const { item } = Astro.props;
     </div>
     <div class="mt-4 px-5 pb-5">
       <h5 class="text-xl tracking-tight text-slate-900 flex justify-center">
-        {item.breed.name}
+        {t[item.breed.name]}
       </h5>
       <p>
         <span class="text-base text-slate-600 flex justify-center"
