@@ -1,6 +1,16 @@
 ---
 import logo from '@/assets/logo.svg';
 import { Image } from 'astro:assets';
+import { fetchCart } from '@/services/cart_service';
+const id = Astro.locals.user
+  ? Astro.locals.user.id
+  : Astro.locals.anonymous?.uid;
+
+if (!id) {
+  throw new Error('failed to fetch userId');
+}
+const orderItems = await fetchCart(id);
+const cartItemCount = orderItems.length;
 ---
 
 <header class="relative">
@@ -54,15 +64,15 @@ import { Image } from 'astro:assets';
           }
 
           <!-- Cart -->
-          <div class="ml-4 flow-root">
+          <div class="relative ml-4 flow-root">
             <a href="/cart" class="group -m-2 flex items-center p-2">
               <span
                 class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500"
                 >shopping_cart</span
               >
               <span
-                class="ml-2 text-xl font-medium text-gray-700 group-hover:text-gray-800"
-                >0</span
+                class="absolute bottom-5 left-5 ml-2 text-xl font-medium bg-rose-400 px-2 rounded-full text-white group-hover:bg-rose-500"
+                >{cartItemCount}</span
               >
               <span class="sr-only">items in cart, view bag</span>
             </a>
