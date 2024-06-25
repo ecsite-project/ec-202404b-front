@@ -44,3 +44,23 @@ export const addToCart = async (
   }
   return;
 };
+
+export const removeFromCart = async (orderItemId: string) => {
+  const response = await fetch(
+    `http://localhost:8080/api/shoppingCart/deleteItem`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderItemId,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+  return;
+};

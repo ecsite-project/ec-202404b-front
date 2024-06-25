@@ -1,6 +1,4 @@
 ---
-// export const prerender = true によりSSGモードになる
-export const prerender = true;
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemDetail, fetchItemList } from '@/services/item_service';
 import type { GetStaticPaths } from 'astro';
@@ -14,19 +12,13 @@ import {
 } from "@/components/ui/breadcrumb"
 
 
-export const getStaticPaths = (async () => {
-  const itemList = await fetchItemList();
-  return await Promise.all(
-    itemList.map(async (item) => ({
-      params: {
-        id: item.id.toString(),
-      },
-      props: { detail: await fetchItemDetail(item.id) },
-    }))
-  );
-}) satisfies GetStaticPaths;
 
-const detail = Astro.props.detail;
+const id = Astro.params.id;
+
+if (!id) {
+  throw new Error('failed to fetch itemId');
+}
+const detail = await fetchItemDetail(id);
 const optionGroupList = detail.optionGroup;
 const item = detail.item;
 
