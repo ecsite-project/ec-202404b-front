@@ -58,7 +58,7 @@ const item = detail.item;
                     <img
                     transition:name={item.id}
                       class="h-full w-full max-w-full object-cover hover:scale-105 transition-transform duration-200 ease-in-out"
-                      src="/images/cat3.jpg"
+                      src={'/img/' + item.image}
                       alt=""
                       onerror="this.src='/images/no_data.png'"
                     />
@@ -88,6 +88,7 @@ const item = detail.item;
                   (
                     <h2 class="mt-4 text-base text-gray-900">{group.inputType === 'radio' ? group.name : `${group.name}(複数選択可)`}</h2>
                     <div class="mt-3 flex select-none flex-wrap items-center gap-1">
+                    { group.inputType == 'radio' &&(
                     <label>
                       <input
                         type={group.inputType}
@@ -100,6 +101,8 @@ const item = detail.item;
                         なし
                       </p>
                     </label>
+                    )
+                    }
                    { group.options.map((option) => (
                       <label>
                         <input

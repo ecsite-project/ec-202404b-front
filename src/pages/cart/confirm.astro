@@ -21,11 +21,9 @@ import { OrderItemListSchema } from '@/types/order_item_types';
 let error: CreateOrderFormError | undefined;
 let form: Partial<CreateOrderForm> | undefined;
 
-const id = Astro.locals.user
-  ? Astro.locals.user.id
-  : Astro.locals.anonymous?.uid;
+const id = Astro.locals.user?.id;
 if (!id) {
-  throw new Error('failed to fetch userId');
+  return Astro.redirect('/auth/login');
 }
 
 if (Astro.request.method === 'POST') {

@@ -16,12 +16,16 @@ import { Image } from 'astro:assets';
         </div>
 
         <div class="hidden sm:flex items-center space-x-6">
-          <a href="/mypage" class="group -m-2 flex items-center p-2">
-            <span
-              class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500"
-              >person</span
-            >
-          </a>
+          {
+            Astro.locals.user != null && (
+              <a href="/mypage" class="group -m-2 flex items-center p-2">
+                <span class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500">
+                  person
+                </span>
+              </a>
+            )
+          }
+
           {
             Astro.locals.user == null ? (
               <>
