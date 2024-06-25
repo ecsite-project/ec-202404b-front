@@ -33,6 +33,7 @@ export const fetchItemDetail = async (id: string): Promise<ItemDetail> => {
 export const fetchItemsWithParams = async (
   query: SearchQuery
 ): Promise<ItemPage> => {
+  query.search.breed = query.search.breed == 'null' ? '' : query.search.breed;
   const response = await fetch(`http://localhost:8080/api/getItemList/page`, {
     method: 'POST',
     headers: {

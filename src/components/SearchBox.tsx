@@ -106,6 +106,12 @@ export const SearchBox = ({
                         <SelectValue placeholder="種類" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem
+                          className={defaultValues.breed ? '' : 'hidden'}
+                          value="null"
+                        >
+                          なし
+                        </SelectItem>
                         {breeds.map((breed) => (
                           <SelectItem value={breed}>{breed}</SelectItem>
                         ))}
