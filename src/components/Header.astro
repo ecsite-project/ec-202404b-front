@@ -117,9 +117,11 @@ import { Image } from 'astro:assets';
   </nav>
 </header>
 <script>
-  const menu = document.getElementById('mobile-menu');
-  const hamburgerButton = document.getElementById('hamburgerButton');
-  hamburgerButton?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  document.addEventListener('astro:page-load', function () {
+    const menu = document.getElementById('mobile-menu');
+    const hamburgerButton = document.getElementById('hamburgerButton');
+    hamburgerButton?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
   });
 </script>
