@@ -1,5 +1,6 @@
 ---
 import type { Item } from '@/types/item_types';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   item: Item;
@@ -71,15 +72,11 @@ const { item } = Astro.props;
         >
       </p>
     </div>
-    <a
-      href="#"
-      class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-    >
-      <span
-        class="material-icons-outlined h-6 w-6 text-gray-400 group-hover:text-gray-500"
-        >add_shopping_cart</span
+    <form method="post">
+      <Button className="flex items-center justify-center ">
+        <span class="material-icons-outlined h-6 w-6">add_shopping_cart</span>
+        カートに追加する</Button
       >
-      カートに追加する</a
-    >
+    </form>
   </div>
 </div>
