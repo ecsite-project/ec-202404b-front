@@ -1,0 +1,169 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="注文確認画面">
+  <form method="post" class="max-w-md mx-auto">
+    <p class="text-2xl mb-4 text-center">お届け先</p>
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        for="name"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >お名前</label
+      >
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        for="email"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >メールアドレス</label
+      >
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="tel"
+        name="telephone"
+        id="telephone"
+        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        for="telephone"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >電話番号</label
+      ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+    </div>
+    <div class="grid md:grid-cols-2 md:gap-6">
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="text"
+          name="zipcode"
+          id="zipcode"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="zipcode"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >郵便番号</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+      </div>
+      <button id="zipcode-complete" type="button"> 住所検索</button>
+    </div>
+    <div class="grid md:grid-cols-2 md:gap-6">
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="text"
+          name="prefecture"
+          id="prefecture"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="prefecture"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >都道府県</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          type="text"
+          name="municipalities"
+          id="municipalities"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+        />
+        <label
+          for="municipalities"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >市区町村</label
+        ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+      </div>
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="text"
+        name="address"
+        id="address"
+        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        for="address"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >住所</label
+      ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="date"
+        name="deliveryDate"
+        id="deliveryDate"
+        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        placeholder=" "
+      />
+      <label
+        for="address"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >配達日時</label
+      ><p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      <label
+        for="deliveryTime"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >配達時間</label
+      >
+      <input
+        type="radio"
+        name="deliveryTime"
+        value="8:00~10:00"
+        id="deliveryTime"
+      />8:00~10:00
+      <input
+        type="radio"
+        name="deliveryTime"
+        value="10:00-12:00"
+        id="deliveryTime"
+      />10:00~12:00 <input
+        type="radio"
+        name="deliveryTime"
+        value="12:00-14:00"
+        id="deliveryTime"
+      />12:00~14:00 <input
+        type="radio"
+        name="deliveryTime"
+        value="14:00-16:00"
+        id="deliveryTime"
+      />14:00~16:00 <input
+        type="radio"
+        name="deliveryTime"
+        value="16:00-18:00"
+        id="deliveryTime"
+      />16:00~18:00
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500"></p>
+    </div>
+
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >注文する</button
+      >
+    </div>
+  </form>
+</Layout>
