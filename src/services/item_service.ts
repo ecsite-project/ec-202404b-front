@@ -1,4 +1,3 @@
-import { fetchWithCache } from '@/lib/chche';
 import {
   ItemDetailSchema,
   ItemListSchema,
@@ -10,9 +9,7 @@ import {
 } from '@/types/item_types';
 
 export const fetchItemList = async (): Promise<ItemList> => {
-  const response = await fetchWithCache(
-    `http://localhost:8080/api/getItemList`
-  );
+  const response = await fetch(`http://localhost:8080/api/getItemList`);
   if (!response.ok) {
     throw new Error('failed to fetch items');
   }
