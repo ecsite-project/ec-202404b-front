@@ -15,7 +15,6 @@ export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
     throw new Error(await response.text());
   }
   const data = await response.json();
-
   const parsed = OrderItemListSchema.parse(data.orderItems);
   return parsed;
 };
