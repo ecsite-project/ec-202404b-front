@@ -1,4 +1,5 @@
 export const addShoppingCart = async (
+  userId: string,
   itemId: string,
   optionIdList: string[]
 ) => {
@@ -10,6 +11,7 @@ export const addShoppingCart = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId,
         itemId,
         optionIdList,
       }),
@@ -17,8 +19,7 @@ export const addShoppingCart = async (
   );
 
   if (!response.ok) {
-    throw new Error('Failed to add items');
+    throw new Error(await response.text());
   }
-  const result = await response.json();
-  return result;
+  return;
 };
