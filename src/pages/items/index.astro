@@ -33,15 +33,19 @@ const items = await fetchItemsWithParams(parsed.data);
 
 <Layout title="ペット一覧">
   <div class="m-4">
-    <SearchBox
-      client:only="react"
-      defaultValues={{
-        maxPrice: parsed.data.search.maxPrice,
-        minPrice: parsed.data.search.minPrice,
-        colorList: parsed.data.search.colorList,
-        breed: parsed.data.search.breed,
-      }}
-    />
+    <form method="get">
+      <div class="max-w-5xl mx-auto flex flex-col bg-white rounded-2xl p-6">
+        <SearchBox
+          client:load
+          defaultValues={{
+            maxPrice: parsed.data.search.maxPrice,
+            minPrice: parsed.data.search.minPrice,
+            colorList: parsed.data.search.colorList,
+            breed: parsed.data.search.breed,
+          }}
+        />
+      </div>
+    </form>
   </div>
 
   <div class="flex justify-center">

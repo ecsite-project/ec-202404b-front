@@ -1,6 +1,4 @@
 ---
-// export const prerender = true によりSSGモードになる
-export const prerender = true;
 import Layout from '@/layouts/Layout.astro';
 import { fetchItemDetail, fetchItemList } from '@/services/item_service';
 import type { GetStaticPaths } from 'astro';
@@ -16,19 +14,13 @@ import type { Translations } from '@/locales/locales';
 const t:Translations = ja;
 
 
-export const getStaticPaths = (async () => {
-  const itemList = await fetchItemList();
-  return await Promise.all(
-    itemList.map(async (item) => ({
-      params: {
-        id: item.id.toString(),
-      },
-      props: { detail: await fetchItemDetail(item.id) },
-    }))
-  );
-}) satisfies GetStaticPaths;
 
-const detail = Astro.props.detail;
+const id = Astro.params.id;
+
+if (!id) {
+  throw new Error('failed to fetch itemId');
+}
+const detail = await fetchItemDetail(id);
 const optionGroupList = detail.optionGroup;
 const item = detail.item;
 
@@ -47,7 +39,7 @@ const item = detail.item;
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/components">{item.breed.name}についての情報</BreadcrumbLink>
+                  <BreadcrumbLink>{item.breed.name}についての情報</BreadcrumbLink>
                 </BreadcrumbItem>  
               </BreadcrumbList>
             </Breadcrumb>
@@ -60,7 +52,7 @@ const item = detail.item;
                     <img
                     transition:name={item.id}
                       class="h-full w-full max-w-full object-cover hover:scale-105 transition-transform duration-200 ease-in-out"
-                      src="/images/cat3.jpg"
+                      src={'/img/' + item.image}
                       alt=""
                       onerror="this.src='/images/no_data.png'"
                     />
@@ -90,6 +82,7 @@ const item = detail.item;
                   (
                     <h2 class="mt-4 text-base text-gray-900">{group.inputType === 'radio' ? t[group.name] : `${t[group.name]}(複数選択可)`}</h2>
                     <div class="mt-3 flex select-none flex-wrap items-center gap-1">
+                    { group.inputType == 'radio' &&(
                     <label>
                       <input
                         type={group.inputType}
@@ -102,6 +95,8 @@ const item = detail.item;
                         なし
                       </p>
                     </label>
+                    )
+                    }
                    { group.options.map((option) => (
                       <label>
                         <input

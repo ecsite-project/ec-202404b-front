@@ -1,3 +1,4 @@
+import { fetchWithToken } from '@/lib/fetch';
 import {
   UserInfoSchema,
   type CreateUserForm,
@@ -23,12 +24,13 @@ export const createUser = async (user: CreateUserForm) => {
 };
 
 export const fetchUserInfo = async (locals: App.Locals): Promise<UserInfo> => {
-  const response = await fetch(`http://localhost:8080/api/getUser`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${locals.user?.jwt}`,
-    },
-  });
+  const response = await fetchWithToken(
+    `http://localhost:8080/api/getUser`,
+    locals.user?.jwt,
+    {
+      method: 'GET',
+    }
+  );
   if (!response.ok) {
     throw new Error(await response.text());
   }

@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import { login } from '@/services/auth_service';
 import { LoginFormSchema } from '@/types/auth_type';
 
+let message = '';
 if (Astro.request.method === 'POST') {
   const data = await Astro.request.formData().then((data) => {
     const r: Record<string, string> = {};
@@ -21,6 +22,7 @@ if (Astro.request.method === 'POST') {
     if (isSuccess) {
       return Astro.redirect('/items');
     }
+    message = 'ログインに失敗しました';
   }
 }
 ---
@@ -28,6 +30,7 @@ if (Astro.request.method === 'POST') {
 <Layout title="ログイン画面" showFooter={false}>
   <form method="post" class="max-w-md mx-auto">
     <p class="text-2xl mb-4 text-center">ログイン</p>
+    <p class="text-red-500 text-center mb-4">{message}</p>
     <div class="relative z-0 w-full mb-5 group">
       <input
         type="email"

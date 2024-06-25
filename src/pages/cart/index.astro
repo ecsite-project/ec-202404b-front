@@ -24,7 +24,6 @@ const totalOptionsPrice = orderItems
       .reduce((acc, cur) => acc + cur, 0)
   )
   .reduce((acc, cur) => acc + cur, 0);
-console.log(orderItems[0].options);
 ---
 
 <Layout title="カート画面">
@@ -45,7 +44,7 @@ console.log(orderItems[0].options);
                       <div class="shrink-0">
                         <img
                           class="h-24 w-24 max-w-full rounded-lg object-cover"
-                          src={`/images/${orderItem.item.image}`}
+                          src={'/img/' + orderItem.item.image}
                           alt="pet_image"
                         />
                       </div>
@@ -75,25 +74,32 @@ console.log(orderItems[0].options);
                         </div>
 
                         <div class="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                          <button
-                            type="submit"
-                            class="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
-                          >
-                            <svg
-                              class="h-5 w-5"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
+                          <form method="POST" action="/api/cart/remove">
+                            <input
+                              type="hidden"
+                              name="orderItemId"
+                              value={orderItem.id}
+                            />
+                            <button
+                              type="submit"
+                              class="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
                             >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
+                              <svg
+                                class="h-5 w-5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </button>
+                          </form>
                         </div>
                       </div>
                     </li>
@@ -127,25 +133,26 @@ console.log(orderItems[0].options);
             </div>
 
             <div class="mt-6 text-center">
-              <button
-                type="button"
-                class="group inline-flex w-full items-center justify-center rounded-md bg-rose-300 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-rose-500"
-              >
-                注文に進む
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="group-hover:ml-8 ml-4 h-6 w-6 transition-all"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
+              <form method="GET" action="/cart/confirm">
+                <button
+                  class="group inline-flex w-full items-center justify-center rounded-md bg-rose-300 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-rose-500"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                </svg>
-              </button>
+                  注文に進む
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="group-hover:ml-8 ml-4 h-6 w-6 transition-all"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </button>
+              </form>
             </div>
           </div>
         </div>

@@ -16,12 +16,16 @@ import { Image } from 'astro:assets';
         </div>
 
         <div class="hidden sm:flex items-center space-x-6">
-          <a href="/mypage" class="group -m-2 flex items-center p-2">
-            <span
-              class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500"
-              >person</span
-            >
-          </a>
+          {
+            Astro.locals.user != null && (
+              <a href="/mypage" class="group -m-2 flex items-center p-2">
+                <span class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500">
+                  person
+                </span>
+              </a>
+            )
+          }
+
           {
             Astro.locals.user == null ? (
               <>
@@ -104,7 +108,7 @@ import { Image } from 'astro:assets';
           >新規登録</a
         >
         <a
-          href="#"
+          href="/cart"
           class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
           >カート</a
         >
@@ -113,9 +117,11 @@ import { Image } from 'astro:assets';
   </nav>
 </header>
 <script>
-  const menu = document.getElementById('mobile-menu');
-  const hamburgerButton = document.getElementById('hamburgerButton');
-  hamburgerButton?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  document.addEventListener('astro:page-load', function () {
+    const menu = document.getElementById('mobile-menu');
+    const hamburgerButton = document.getElementById('hamburgerButton');
+    hamburgerButton?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
   });
 </script>

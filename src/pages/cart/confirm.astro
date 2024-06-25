@@ -24,11 +24,9 @@ const t: Translations = ja;
 let error: CreateOrderFormError | undefined;
 let form: Partial<CreateOrderForm> | undefined;
 
-const id = Astro.locals.user
-  ? Astro.locals.user.id
-  : Astro.locals.anonymous?.uid;
-if (!id) {
-  throw new Error('failed to fetch userId');
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect('/auth/login');
 }
 
 if (Astro.request.method === 'POST') {
@@ -41,18 +39,17 @@ if (Astro.request.method === 'POST') {
   const data = Object.fromEntries(formData);
   if (parsed.success) {
     await finalizeOrder(
-      id,
+      user.jwt,
       parsed.data,
       orderItems.map((item) => item.id)
     );
     return Astro.redirect('/cart/complete');
   } else {
     error = parsed.error?.format();
-    throw new Error(parsed.error.toString() ?? '');
   }
 }
 
-const orderItems = await fetchCart(id);
+const orderItems = await fetchCart(user.id);
 ---
 
 <Layout title="カート画面">

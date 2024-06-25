@@ -58,85 +58,80 @@ export const SearchBox = ({
   };
 
   return (
-    <form method="get">
-      <div className="max-w-5xl mx-auto flex flex-col bg-white rounded-2xl p-6">
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>絞り込み</AccordionTrigger>
-            <AccordionContent>
-              <div className="flex justify-around ">
-                <div className="flex flex-col">
-                  <div>
-                    <input
-                      className="text-right text-xl"
-                      type="number"
-                      name="min"
-                      value={minPrice}
-                      onChange={(e) =>
-                        setMinPrice(Number.parseInt(e.target.value))
-                      }
-                    />
-                    円～
-                    <input
-                      className="text-right text-xl"
-                      type="number"
-                      name="max"
-                      value={maxPrice}
-                      onChange={(e) =>
-                        setMaxPrice(Number.parseInt(e.target.value))
-                      }
-                    />
-                    円
-                    <Slider
-                      id="priceSlider"
-                      className="my-10"
-                      onValueChange={handleChange}
-                      max={50_0000}
-                      min={50_000}
-                      step={10_000}
-                      value={[minPrice, maxPrice]}
-                    />
-                  </div>
-                  <div>
-                    <Select
-                      name="breed"
-                      defaultValue={defaultValues.breed ?? ''}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="種類" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {breeds.map((breed) => (
-                          <SelectItem value={breed}>{breed}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="border-8 border-pink-100 rounded-xl px-8 py-4">
-                  <ul>
-                    {colors.map((color) => (
-                      <li className="my-2">
-                        <CheckboxWithText
-                          text={color}
-                          id={color}
-                          name="color"
-                          value={color}
-                          checked={defaultValues.colorList.includes(color)}
-                        ></CheckboxWithText>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+    <Accordion type="single" collapsible>
+      <AccordionItem value="item-1">
+        <AccordionTrigger>絞り込み</AccordionTrigger>
+        <AccordionContent>
+          <div className="flex justify-around ">
+            <div className="flex flex-col">
+              <div>
+                <input
+                  className="text-right text-xl"
+                  type="number"
+                  name="min"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(Number.parseInt(e.target.value))}
+                />
+                円～
+                <input
+                  className="text-right text-xl"
+                  type="number"
+                  name="max"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number.parseInt(e.target.value))}
+                />
+                円
+                <Slider
+                  id="priceSlider"
+                  className="my-10"
+                  onValueChange={handleChange}
+                  max={50_0000}
+                  min={50_000}
+                  step={10_000}
+                  value={[minPrice, maxPrice]}
+                />
               </div>
-              <Button className="mt-4 w-full" type="submit">
-                検索
-              </Button>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-    </form>
+              <div>
+                <Select name="breed" defaultValue={defaultValues.breed ?? ''}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="種類" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem
+                      className={defaultValues.breed ? '' : 'hidden'}
+                      value="null"
+                    >
+                      なし
+                    </SelectItem>
+                    {breeds.map((breed) => (
+                      <SelectItem value={breed}>{breed}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="border-8 border-pink-100 rounded-xl px-8 py-4">
+              <ul>
+                {colors.map((color) => (
+                  <li className="my-2">
+                    <CheckboxWithText
+                      text={color}
+                      id={color}
+                      name="color"
+                      value={color}
+                      checked={defaultValues.colorList.includes(color)}
+                    ></CheckboxWithText>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <Button className="mt-4 w-full" type="submit">
+            検索
+          </Button>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
