@@ -1,0 +1,58 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { fetchUserInfo } from '@/services/user_service';
+
+const user = await fetchUserInfo(Astro.locals);
+---
+
+<Layout title="マイページ">
+  <div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h1 class="text-2xl font-bold mb-4 text-gray-800">マイページ</h1>
+      <div class="space-y-2">
+        <div class="info">
+          <span class="font-semibold text-gray-600">名前:</span>
+          <span class="text-gray-900">{user.name}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">メール:</span>
+          <span class="text-gray-900">{user.email}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">郵便番号:</span>
+          <span class="text-gray-900">{user.zipcode}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">都道府県:</span>
+          <span class="text-gray-900">{user.prefecture}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">市区町村:</span>
+          <span class="text-gray-900">{user.municipalities}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">住所:</span>
+          <span class="text-gray-900">{user.address}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">電話番号:</span>
+          <span class="text-gray-900">{user.telephone}</span>
+        </div>
+        <div class="info">
+          <span class="font-semibold text-gray-600">注文履歴:</span>
+          {
+            user.orderHistory.length > 0 ? (
+              <ul class="list-disc list-inside text-gray-900">
+                {user.orderHistory.map((order, index) => (
+                  <li>{order}</li>
+                ))}
+              </ul>
+            ) : (
+              <p class="text-gray-900">注文履歴はありません</p>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
