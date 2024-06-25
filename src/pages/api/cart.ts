@@ -7,8 +7,6 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
     .filter(([key, value]) => key !== 'itemId' && value !== 'none')
     .map(([key, value]) => value as string);
   const itemId = formData.get('itemId') as string | null;
-  console.log('itemId:', itemId);
-  console.log('options:', options);
   if (!itemId) {
     throw new Error('failed to fetch itemId');
   }
