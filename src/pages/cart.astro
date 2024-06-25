@@ -39,6 +39,9 @@ const orderItems = await fetchCart(id);
             </TableCell>
             <TableCell />
             <TableCell>{orderItem.item.price}</TableCell>
+            <TableCell className="text-right">
+              {JSON.stringify(orderItem.options)}
+            </TableCell>
             <TableCell className="text-right" />
             <TableCell>
               <form method="post">
