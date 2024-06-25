@@ -30,7 +30,7 @@ export const fetchUserInfo = async (locals: App.Locals): Promise<UserInfo> => {
     },
   });
   if (!response.ok) {
-    throw new Error('failed to fetch user');
+    throw new Error(await response.text());
   }
   const data = await response.json();
   const parsed = UserInfoSchema.parse(data);

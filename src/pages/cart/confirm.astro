@@ -15,22 +15,11 @@ import type {
 import { CreateOrderFormSchema, TimeRange } from '@/types/order_types';
 import Layout from '@/layouts/Layout.astro';
 import { Button } from '@/components/ui/button';
+import { finalizeOrder } from '@/services/order_service';
+import { OrderItemListSchema } from '@/types/order_item_types';
 
 let error: CreateOrderFormError | undefined;
 let form: Partial<CreateOrderForm> | undefined;
-
-if (Astro.request.method === 'POST') {
-  const formData = await Astro.request.formData();
-  form = Object.fromEntries(formData);
-  const parsed = CreateOrderFormSchema.safeParse(Object.fromEntries(formData));
-  const orderItems = JSON.parse(formData.get('orderItems')?.toString() ?? '[]');
-  const data = Object.fromEntries(formData);
-  if (parsed.success) {
-    console.log(data);
-  } else {
-    error = parsed.error?.format();
-  }
-}
 
 const id = Astro.locals.user
   ? Astro.locals.user.id
@@ -38,6 +27,30 @@ const id = Astro.locals.user
 if (!id) {
   throw new Error('failed to fetch userId');
 }
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  form = Object.fromEntries(formData);
+  const parsed = CreateOrderFormSchema.safeParse(Object.fromEntries(formData));
+  const orderItems = OrderItemListSchema.parse(
+    JSON.parse(formData.get('orderItems')?.toString() ?? '[]')
+  );
+  const data = Object.fromEntries(formData);
+  console.log(parsed.error);
+  if (parsed.success) {
+    console.log(data);
+    await finalizeOrder(
+      id,
+      parsed.data,
+      orderItems.map((item) => item.id)
+    );
+    return Astro.redirect('/cart/complete');
+  } else {
+    error = parsed.error?.format();
+    throw new Error(parsed.error.toString() ?? '');
+  }
+}
+
 const orderItems = await fetchCart(id);
 ---
 
@@ -77,7 +90,7 @@ const orderItems = await fetchCart(id);
   <div class="mb-16">
     <form method="post" class="max-w-md mx-auto">
       <p class="text-2xl mb-4 text-center">お届け先</p>
-      <Button id="complete-userinfo">ログイン者情報を入力</Button>
+      <Button type="button" id="complete-userinfo">ログイン者情報を入力</Button>
       <div class="relative z-0 w-full mb-5 mt-8 group">
         <input
           type="text"
@@ -233,8 +246,8 @@ const orderItems = await fetchCart(id);
               <input
                 type="radio"
                 name="deliveryTime"
-                value={key}
-                checked={form?.deliveryTime === key}
+                value={value}
+                checked={form?.deliveryTime === value}
                 id="deliveryTime"
               />
               {value}

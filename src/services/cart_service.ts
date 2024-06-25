@@ -1,4 +1,4 @@
-import { OrderItemListSchema, type OrderItem } from '@/types/orderItem_types';
+import { OrderItemListSchema, type OrderItem } from '@/types/order_item_types';
 
 export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
   const response = await fetch(
@@ -11,7 +11,7 @@ export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
       body: JSON.stringify({ userId: userId }),
     }
   );
-
+  console.log(response);
   if (!response.ok) {
     throw new Error(await response.text());
   }

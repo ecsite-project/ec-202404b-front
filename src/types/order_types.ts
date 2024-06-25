@@ -1,5 +1,4 @@
 import { z } from 'astro/zod';
-import { OrderItemSchema } from './orderItem_types';
 export const OrderSchema = z.object({
   id: z.string(),
   userId: z.string(),
@@ -30,11 +29,8 @@ export enum TimeRange {
 }
 
 export const CreateOrderFormSchema = z.object({
-  userId: z.string(),
   name: z.string().min(1, { message: '名前を入力してください' }),
   email: z.string().email({ message: 'メールアドレスの形式ではありません' }),
-  totalPrice: z.number(),
-  destinationName: z.string().default(''),
   zipcode: z.string().regex(new RegExp('^[0-9]{3}-[0-9]{4}$'), {
     message: '- を含む半角数字7桁で入力してください',
   }),
@@ -46,8 +42,7 @@ export const CreateOrderFormSchema = z.object({
   deliveryTime: z.nativeEnum(TimeRange, {
     message: '配達時間を選択してください',
   }),
-  paymentMethod: z.string(),
-  orderItems: z.array(OrderItemSchema),
+  paymentMethod: z.string().default('cache'),
 });
 
 export type CreateOrderForm = z.infer<typeof CreateOrderFormSchema>;
