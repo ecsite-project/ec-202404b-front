@@ -48,3 +48,26 @@ export const SearchQuerySchema = z.object({
 });
 
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
+
+export const OptionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+});
+
+export const OptionListSchema = z.array(OptionSchema);
+export type OptionList = z.infer<typeof OptionListSchema>;
+
+const optionGroupSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  inputType: z.enum(['text', 'radio', 'checkbox']),
+  options: OptionListSchema,
+});
+
+export const ItemDetailSchema = z.object({
+  item: ItemSchema,
+  optionGroup: z.array(optionGroupSchema),
+});
+
+export type ItemDetail = z.infer<typeof ItemDetailSchema>;
