@@ -13,8 +13,6 @@ import ja from '@/locales/ja.json';
 import type { Translations } from '@/locales/locales';
 const t:Translations = ja;
 
-
-
 const id = Astro.params.id;
 
 if (!id) {
@@ -39,7 +37,7 @@ const item = detail.item;
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink>{item.breed.name}についての情報</BreadcrumbLink>
+                  <BreadcrumbLink>{t[item.breed.name]}についての情報</BreadcrumbLink>
                 </BreadcrumbItem>  
               </BreadcrumbList>
             </Breadcrumb>

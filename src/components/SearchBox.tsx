@@ -17,6 +17,13 @@ import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from './ui/button';
 
+import translations from '@/locales/ja.json';
+import type { Translations } from '@/locales/locales';
+const ja: Translations = translations;
+const t = (key: string): string => {
+  return ja[key] || key;
+};
+
 const colors = [
   'Black',
   'White',
@@ -24,9 +31,9 @@ const colors = [
   'Golden',
   'Gray',
   'Red',
+  'Blue',
   'Cream',
   'Fawn',
-  'Blue',
 ];
 const breeds = [
   'Shiba Inu',
@@ -38,6 +45,16 @@ const breeds = [
   'Beagle',
   'Chihuahua',
   'Dachshund',
+  'Munchkin',
+  'Scottish Fold',
+  'Sphynx',
+  'Russian Blue',
+  'Siamese',
+  'Maine Coon',
+  'Persian',
+  'Abyssinian',
+  'Norwegian Forest Cat',
+  'Bengal',
 ];
 export const SearchBox = ({
   defaultValues,
@@ -104,7 +121,7 @@ export const SearchBox = ({
                       なし
                     </SelectItem>
                     {breeds.map((breed) => (
-                      <SelectItem value={breed}>{breed}</SelectItem>
+                      <SelectItem value={breed}>{t(breed)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -115,7 +132,7 @@ export const SearchBox = ({
                 {colors.map((color) => (
                   <li className="my-2">
                     <CheckboxWithText
-                      text={color}
+                      text={t(color)}
                       id={color}
                       name="color"
                       value={color}
