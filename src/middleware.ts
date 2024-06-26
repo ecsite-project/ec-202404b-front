@@ -50,7 +50,7 @@ const jwt = defineMiddleware(async (context, next) => {
     return await next();
   } catch (e: unknown) {
     if (e instanceof AuthorizeError) {
-      return context.redirect('/auth/login');
+      return context.redirect('/auth/signout');
     }
     throw e;
   }
@@ -64,6 +64,7 @@ export const anonymous = defineMiddleware(async (context, next) => {
     const anonymousUid = crypto.randomUUID();
     context.locals.anonymous = { uid: anonymousUid };
     context.cookies.set('anonymous', anonymousUid, {
+      path: '/',
       maxAge: 60 * 60 * 24 * 365,
       sameSite: 'strict',
       httpOnly: true,

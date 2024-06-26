@@ -17,4 +17,7 @@ export default defineConfig({
     mode: 'standalone',
   }),
   redirects: { '/': '/items' },
+  server: {
+    host: true,
+  },
 });
