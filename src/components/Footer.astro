@@ -1,6 +1,5 @@
 ---
 import logo from '@/assets/logo.svg';
-import { Image } from 'astro:assets';
 ---
 
 <footer class="bg-white shadow mt-8">
@@ -10,7 +9,13 @@ import { Image } from 'astro:assets';
         href="/"
         class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
       >
-        <Image src={logo} , alt="shop_logo" class="h-20" /></a
+        <img
+          src={logo.src}
+          width={logo.width}
+          height={logo.height}
+          alt="shop_logo"
+          class="h-20"
+        /></a
       >
     </div>
     <ul
