@@ -1,7 +1,24 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+const fetchDog = async (): Promise<string> => {
+  const res = await fetch('https://dog.ceo/api/breeds/image/random');
+  const data = await res.json();
+  return data.message;
+};
+const dogImage = await fetchDog();
 ---
 
 <Layout title="購入完了画面">
-  <h1>購入完了</h1>
+  <div class="h-96 mt-24 mx-60 bg-white rounded-lg">
+    <div class="flex justify-center">
+      <p class="sm:text-3xl mt-20">購入が完了しました。</p>
+    </div>
+    <div>
+      <img
+        src={dogImage}
+        alt="dog_image"
+        class="mx-auto mt-10 w-32 h-32 rounded-full"
+      />
+    </div>
+  </div>
 </Layout>
