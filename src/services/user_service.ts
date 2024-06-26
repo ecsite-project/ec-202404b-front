@@ -1,4 +1,9 @@
-import type { CreateUserForm } from '@/types/user_types';
+import { fetchWithToken } from '@/lib/fetch';
+import {
+  UserInfoSchema,
+  type CreateUserForm,
+  type UserInfo,
+} from '@/types/user_types';
 
 export const createUser = async (user: CreateUserForm) => {
   const response = await fetch(`http://localhost:8080/api/register`, {
@@ -14,6 +19,22 @@ export const createUser = async (user: CreateUserForm) => {
   }
   return {
     success: false,
-    errors: await response.json().then((data) => data.errors),
+    errors: await response.json(),
   };
+};
+
+export const fetchUserInfo = async (locals: App.Locals): Promise<UserInfo> => {
+  const response = await fetchWithToken(
+    `http://localhost:8080/api/getUser`,
+    locals.user?.jwt,
+    {
+      method: 'GET',
+    }
+  );
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+  const data = await response.json();
+  const parsed = UserInfoSchema.parse(data);
+  return parsed;
 };

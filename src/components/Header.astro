@@ -1,0 +1,137 @@
+---
+import logo from '@/assets/logo.svg';
+import { Image } from 'astro:assets';
+import { fetchCart } from '@/services/cart_service';
+const id = Astro.locals.user
+  ? Astro.locals.user.id
+  : Astro.locals.anonymous?.uid;
+
+if (!id) {
+  throw new Error('failed to fetch userId');
+}
+const orderItems = await fetchCart(id);
+const cartItemCount = orderItems.length;
+---
+
+<header class="relative">
+  <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="border-b-2 pb-4 border-gray-200">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <div class="ml-4 mt-6">
+          <a href="/items">
+            <Image src={logo} , alt="shop_logo" class="h-24" />
+            <!-- <img class="h-16" src="/images/logo.png" alt="shop_logo" /> -->
+          </a>
+        </div>
+
+        <div class="hidden sm:flex items-center space-x-6">
+          {
+            Astro.locals.user != null && (
+              <a href="/mypage" class="group -m-2 flex items-center p-2">
+                <span class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500">
+                  person
+                </span>
+              </a>
+            )
+          }
+
+          {
+            Astro.locals.user == null ? (
+              <>
+                <a
+                  href="/auth/login"
+                  class="text-xl font-medium text-gray-700 hover:text-gray-800"
+                >
+                  ログイン
+                </a>
+                <span class="h-6 w-px bg-gray-200" aria-hidden="true" />
+                <a
+                  href="/signup"
+                  class="text-xl font-medium text-gray-700 hover:text-gray-800"
+                >
+                  新規登録
+                </a>
+              </>
+            ) : (
+              <a
+                href="/auth/signout"
+                class="text-xl font-medium text-gray-700 hover:text-gray-800"
+              >
+                ログアウト
+              </a>
+            )
+          }
+
+          <!-- Cart -->
+          <div class="relative ml-4 flow-root">
+            <a href="/cart" class="group -m-2 flex items-center p-2">
+              <span
+                class="material-icons-outlined text-4xl text-gray-400 group-hover:text-gray-500"
+                >shopping_cart</span
+              >
+              <span
+                class="absolute bottom-5 left-5 ml-2 text-xl font-medium bg-rose-400 px-2 rounded-full text-white group-hover:bg-rose-500"
+                >{cartItemCount}</span
+              >
+              <span class="sr-only">items in cart, view bag</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
+        <button
+          type="button"
+          id="hamburgerButton"
+          class="relative rounded-md bg-white p-2 text-gray-400 sm:hidden"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span class="absolute -inset-0.5"></span>
+          <span class="sr-only">Open menu</span>
+          <a href="#" class="group -m-2 flex items-center p-2">
+            <span
+              class="material-icons-outlined h-6 w-6 text-gray-400 group-hover:text-gray-500"
+              >menu</span
+            >
+          </a>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="sm:hidden hidden" id="mobile-menu">
+      <div class="space-y-1 pt-2 pb-3">
+        <a
+          href="#"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+          >マイページ</a
+        >
+        <a
+          href="/auth/login"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+          >ログイン</a
+        >
+        <a
+          href="/signup"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+          >新規登録</a
+        >
+        <a
+          href="/cart"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+          >カート</a
+        >
+      </div>
+    </div>
+  </nav>
+</header>
+<script>
+  document.addEventListener('astro:page-load', function () {
+    const menu = document.getElementById('mobile-menu');
+    const hamburgerButton = document.getElementById('hamburgerButton');
+    hamburgerButton?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+  });
+</script>

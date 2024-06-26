@@ -1,0 +1,174 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { fetchItemDetail, fetchItemList } from '@/services/item_service';
+import type { GetStaticPaths } from 'astro';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import ja from '@/locales/ja.json';
+import type { Translations } from '@/locales/locales';
+const t:Translations = ja;
+
+
+
+const id = Astro.params.id;
+
+if (!id) {
+  throw new Error('failed to fetch itemId');
+}
+const detail = await fetchItemDetail(id);
+const optionGroupList = detail.optionGroup;
+const item = detail.item;
+
+---
+
+<Layout title="ペット詳細">
+  {
+    item ? (
+      <>
+        <section class="py-12 sm:py-16">
+          <div class="container mx-auto px-4">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/items">ペット一覧</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink>{item.breed.name}についての情報</BreadcrumbLink>
+                </BreadcrumbItem>  
+              </BreadcrumbList>
+            </Breadcrumb>
+            <div class="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16">
+              <div class="lg:col-span-3 lg:row-end-1">
+                <div class="lg:flex lg:justify-center">
+                  <div class="max-w-xl h-96 overflow-hidden rounded-lg">
+
+
+                    <img
+                    transition:name={item.id}
+                      class="h-full w-full max-w-full object-cover hover:scale-105 transition-transform duration-200 ease-in-out"
+                      src={'/img/' + item.image}
+                      alt=""
+                      onerror="this.src='/images/no_data.png'"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg:col-span-2 lg:row-span-2 lg:row-end-2">
+                <h1 class="sm: text-2xl font-bold text-gray-900 sm:text-3xl">
+                  {t[item.breed.name]}
+                </h1>
+                <div class="mt-2">
+                  {item.gender == 'male' ? (
+                    <span class="rounded-full bg-blue-400 px-2 text-center text-sm font-medium text-white">
+                      男の子
+                    </span>
+                  ) : (
+                    <span class="rounded-full bg-red-400 px-2 text-center text-sm font-medium text-white">
+                      女の子
+                    </span>
+                  )}
+                </div>
+
+                <form method="post" action="/api/cart" id="addShoppingCart">
+                  <input type="hidden" name="itemId" value={item.id} />
+                  {optionGroupList.map((group) =>
+                  (
+                    <h2 class="mt-4 text-base text-gray-900">{group.inputType === 'radio' ? t[group.name] : `${t[group.name]}(複数選択可)`}</h2>
+                    <div class="mt-3 flex select-none flex-wrap items-center gap-1">
+                    { group.inputType == 'radio' &&(
+                    <label>
+                      <input
+                        type={group.inputType}
+                        name={group.name}
+                        value="none"
+                        class="peer sr-only"
+                        checked
+                      />
+                      <p class="peer-checked:bg-rose-300 peer-checked:text-white rounded-lg bg-white px-6 py-2 font-bold">
+                        なし
+                      </p>
+                    </label>
+                    )
+                    }
+                   { group.options.map((option) => (
+                      <label>
+                        <input
+                          type={group.inputType}
+                          name={group.name}
+                          value={option.id}
+                          class="peer sr-only"
+                        />
+                        <p class="peer-checked:bg-rose-300 peer-checked:text-white rounded-lg bg-white px-6 py-2 font-bold">
+                          {option.name}
+                        </p>
+                      </label>
+                    ))}
+                    </div>
+                    )
+                  )}
+                  <div class="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
+                    <div class="flex items-end">
+                      <p class="text-xl">{new Intl.NumberFormat().format(item.price)}円</p>
+                    </div>
+
+                    <button
+                      type="submit"
+                      class="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-rose-300 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-rose-600"
+                    >
+                      <span class="material-icons-outlined h-6 w-6 text-white group-hover:text-gray-500">
+                        add_shopping_cart
+                      </span>
+                      カートに入れる
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="lg:col-span-3">
+                <div class="border-b border-gray-300">
+                  <nav class="flex gap-4">
+                    このワンちゃん・ネコちゃんについて
+                  </nav>
+                </div>
+
+                <div class="mt-8 flow-root sm:mt-12">
+                  <div>
+                    {item.gender == 'male' ? (
+                    <span class="rounded-full bg-blue-400 px-2 text-center text-sm font-medium text-white">
+                      男の子
+                    </span>
+                  ) : (
+                    <span class="rounded-full bg-red-400 px-2 text-center text-sm font-medium text-white">
+                      女の子
+                    </span>
+                  )}
+                  </div>
+                  <h1 class="text-3xl font-bold">{t[item.breed.name]}</h1>
+                  <p class="mt-4">
+                    
+                    {item.description}
+                    
+                  </p>
+                  <p class="mt-4">
+                    {item.birthDay.toLocaleDateString()}にうまれました
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    ) : (
+      <>
+        <p>Item not found</p>
+      </>
+    )
+  }
+</Layout>
