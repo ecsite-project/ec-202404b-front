@@ -1,0 +1,21 @@
+services:
+  front:
+    build: ./front
+    ports:
+      - "4321:4321"
+    depends_on:
+      - back
+  back:
+    container_name: back
+    build: ./back
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ec-202404b
+
+
