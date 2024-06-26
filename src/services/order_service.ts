@@ -7,7 +7,7 @@ export const finalizeOrder = async (
   orderItemIdList: string[]
 ): Promise<void> => {
   const response = await fetchWithToken(
-    `http://localhost:8080/api/confirm/finalize`,
+    `http://back:8080/api/confirm/finalize`,
     token,
     {
       method: 'POST',

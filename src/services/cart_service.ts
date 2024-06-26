@@ -2,7 +2,7 @@ import { OrderItemListSchema, type OrderItem } from '@/types/order_item_types';
 
 export const fetchCart = async (userId: string): Promise<OrderItem[]> => {
   const response = await fetch(
-    `http://localhost:8080/api/shoppingCart/getShoppingCart`,
+    `http://back:8080/api/shoppingCart/getShoppingCart`,
     {
       method: 'POST',
       headers: {
@@ -24,20 +24,17 @@ export const addToCart = async (
   itemId: string,
   optionIdList: string[]
 ) => {
-  const response = await fetch(
-    `http://localhost:8080/api/shoppingCart/addItem`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId,
-        itemId,
-        optionIdList,
-      }),
-    }
-  );
+  const response = await fetch(`http://back:8080/api/shoppingCart/addItem`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId,
+      itemId,
+      optionIdList,
+    }),
+  });
 
   if (!response.ok) {
     throw new Error(await response.text());
@@ -46,18 +43,15 @@ export const addToCart = async (
 };
 
 export const removeFromCart = async (orderItemId: string) => {
-  const response = await fetch(
-    `http://localhost:8080/api/shoppingCart/deleteItem`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        orderItemId,
-      }),
-    }
-  );
+  const response = await fetch(`http://back:8080/api/shoppingCart/deleteItem`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      orderItemId,
+    }),
+  });
 
   if (!response.ok) {
     throw new Error(await response.text());

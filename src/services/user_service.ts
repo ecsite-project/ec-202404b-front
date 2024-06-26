@@ -6,7 +6,7 @@ import {
 } from '@/types/user_types';
 
 export const createUser = async (user: CreateUserForm) => {
-  const response = await fetch(`http://localhost:8080/api/register`, {
+  const response = await fetch(`http://back:8080/api/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const createUser = async (user: CreateUserForm) => {
 
 export const fetchUserInfo = async (locals: App.Locals): Promise<UserInfo> => {
   const response = await fetchWithToken(
-    `http://localhost:8080/api/getUser`,
+    `http://back:8080/api/getUser`,
     locals.user?.jwt,
     {
       method: 'GET',

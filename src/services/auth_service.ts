@@ -14,20 +14,17 @@ export const login = async (
     password: string;
   }
 ): Promise<boolean> => {
-  const response = await fetch(
-    'http://localhost:8080/api/authentication/login',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        anonymous: locals.anonymous?.uid,
-      }),
-    }
-  );
+  const response = await fetch('http://back:8080/api/authentication/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      anonymous: locals.anonymous?.uid,
+    }),
+  });
 
   if (response.ok) {
     const jwt = await response.text();
