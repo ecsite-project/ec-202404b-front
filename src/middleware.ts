@@ -9,6 +9,8 @@ const auth = defineMiddleware(async (context, next) => {
     context.locals.session = null;
     return next();
   }
+  // セッションが存在しない場合、クッキーを削除
+  context.cookies.delete('anonymous');
 
   const { session, user } = await lucia.validateSession(sessionId);
 

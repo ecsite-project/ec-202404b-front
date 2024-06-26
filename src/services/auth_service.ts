@@ -47,7 +47,6 @@ export const login = async (
       sessionCookie.value,
       sessionCookie.attributes
     );
-    cookies.delete('anonymous');
     return true;
   }
   return false;
