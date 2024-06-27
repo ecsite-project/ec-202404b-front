@@ -55,11 +55,17 @@ const items = await fetchItemsWithParams(parsed.data);
       transition:name="page"
     >
       {
-        items.records.map((item) => (
-          <li transition:name={'card' + item.id}>
-            <ItemCard item={item} />
-          </li>
-        ))
+        items.records.length !== 0 ? (
+          items.records.map((item) => (
+            <li transition:name={'card' + item.id}>
+              <ItemCard item={item} />
+            </li>
+          ))
+        ) : (
+          <div class="flex justify-center w-full col-span-2 m-6">
+            <div class="text-2xl">該当するペットは見つかりませんでした</div>
+          </div>
+        )
       }
     </ul>
   </div>

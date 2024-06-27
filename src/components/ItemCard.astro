@@ -18,7 +18,7 @@ const { item } = Astro.props;
     <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
       <img
         transition:name={item.id}
-        class="object-cover"
+        class="object-cover w-full h-full rounded-xl"
         src={'/img/' + item.image}
         alt="item_image"
         onerror="this.src='images/no_data.png'"
@@ -47,7 +47,7 @@ const { item } = Astro.props;
         {t[item.breed.name]}
       </h5>
       <p>
-        <span class="text-base text-slate-600 flex justify-center"
+        <span class="text-base text-slate-600 line-clamp-3"
           >{item.description}</span
         >
       </p>
