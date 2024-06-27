@@ -1,4 +1,12 @@
 ---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import Layout from '@/layouts/Layout.astro';
 import { fetchUserInfo } from '@/services/user_service';
 
@@ -6,53 +14,56 @@ const user = await fetchUserInfo(Astro.locals);
 ---
 
 <Layout title="マイページ">
-  <div class="container mx-auto p-6">
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h1 class="text-2xl font-bold mb-4 text-gray-800">マイページ</h1>
-      <div class="space-y-2">
-        <div class="info">
-          <span class="font-semibold text-gray-600">名前:</span>
-          <span class="text-gray-900">{user.name}</span>
+  <div class="flex justify-center m-10">
+    <Card className="w-[450px]">
+      <CardHeader>
+        <CardDescription>登録情報</CardDescription>
+        <CardTitle>{user.name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div class="mb-4">
+          <p class="text-base font-bold">メールアドレス</p>
+          <p class="text-lg text-muted-foreground">{user.email}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">メール:</span>
-          <span class="text-gray-900">{user.email}</span>
+        <div class="mb-4">
+          <p class="text-base font-bold">電話番号</p>
+          <p class="text-lg text-muted-foreground">{user.telephone}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">郵便番号:</span>
-          <span class="text-gray-900">{user.zipcode}</span>
+        <div class="mb-4">
+          <p class="text-base font-bold">郵便番号</p>
+          <p class="text-lg text-muted-foreground">{user.zipcode}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">都道府県:</span>
-          <span class="text-gray-900">{user.prefecture}</span>
+        <div class="mb-4">
+          <p class="text-base font-bold">都道府県</p>
+          <p class="text-lg text-muted-foreground">{user.prefecture}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">市区町村:</span>
-          <span class="text-gray-900">{user.municipalities}</span>
+        <div class="mb-4">
+          <p class="text-base font-bold">市区町村</p>
+          <p class="text-lg text-muted-foreground">{user.municipalities}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">住所:</span>
-          <span class="text-gray-900">{user.address}</span>
+        <div class="mb-4">
+          <p class="text-base font-bold">住所</p>
+          <p class="text-lg text-muted-foreground">{user.address}</p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">電話番号:</span>
-          <span class="text-gray-900">{user.telephone}</span>
+      </CardContent>
+      <CardFooter>
+        <div class="mb-4">
+          <p class="text-base font-bold">注文履歴</p>
+          <p class="text-lg text-muted-foreground">
+            {
+              user.orderHistory.length > 0 ? (
+                <ul class="list-disc list-inside text-gray-900">
+                  {user.orderHistory.map((order, index) => (
+                    <li>{order}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="text-gray-900">注文履歴はありません</p>
+              )
+            }
+          </p>
         </div>
-        <div class="info">
-          <span class="font-semibold text-gray-600">注文履歴:</span>
-          {
-            user.orderHistory.length > 0 ? (
-              <ul class="list-disc list-inside text-gray-900">
-                {user.orderHistory.map((order, index) => (
-                  <li>{order}</li>
-                ))}
-              </ul>
-            ) : (
-              <p class="text-gray-900">注文履歴はありません</p>
-            )
-          }
-        </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   </div>
 </Layout>
