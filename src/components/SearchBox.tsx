@@ -31,7 +31,6 @@ const colors = [
   'Golden',
   'Gray',
   'Red',
-  'Blue',
   'Cream',
   'Fawn',
 ];
