@@ -338,6 +338,70 @@ const totalOptionsPrice = orderItems
           {error?.deliveryTime?._errors}
         </p>
       </div>
+      <p class="text-2xl m-4 text-center">お支払い方法</p>
+      <div class="relative z-0 w-full mb-5 group text-center">
+        <label>
+          <input type="radio" id="cash" name="paymentMethod" value="bankTransfer"> 銀行振込
+        </label>
+        <label>
+          <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" > クレジットカード
+        </label>
+      </div>
+      <div id="creditCardInfo">
+        <h2>クレジットカード情報を入力してください</h2>
+        <label for="cardNumber">クレジットカード番号：</label>
+        <input type="text" id="cardNumber" name="cardNumber" maxlength="16"><br>
+
+        <label for="expiryMonth">有効期限（月）：</label>
+        <select id="expiryMonth" name="expiryMonth" required>
+          <option value="">--選択してください--</option>
+          <option value="01">01</option>
+          <option value="02">02</option>
+          <option value="03">03</option>
+          <option value="04">04</option>
+          <option value="05">05</option>
+          <option value="06">06</option>
+          <option value="07">07</option>
+          <option value="08">08</option>
+          <option value="09">09</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select><br>
+
+        <label for="expiryYear">有効期限（年）：</label>
+        <select id="expiryYear" name="expiryYear" required>
+          <option value="">--選択してください--</option>
+          <!-- 年の範囲は2018〜2038 -->
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          <option value="2034">2034</option>
+          <option value="2035">2035</option>
+          <option value="2036">2036</option>
+          <option value="2037">2037</option>
+          <option value="2038">2038</option>
+        </select><br>
+
+        <label for="cardHolderName">カード名義人：</label>
+        <input type="text" id="cardHolderName" name="cardHolderName" maxlength="50" pattern="[A-Za-z\s]{1,50}"><br>
+
+        <label for="securityCode">セキュリティコード：</label>
+        <input type="text" id="securityCode" name="securityCode" maxlength="4" ><br>
+      </div>
       <div class="flex justify-center">
         <button
           type="submit"
@@ -420,6 +484,17 @@ const totalOptionsPrice = orderItems
         municipalities.value = data.municipalities;
         address.value = data.address;
       }
+    });
+
+    const cashRadio = document.getElementById('cash') as HTMLInputElement;
+    const creditCardRadio = document.getElementById('creditCard') as HTMLInputElement;
+    const creditCardInfo = document.getElementById('creditCardInfo') as HTMLElement;
+    creditCardInfo.style.display = 'none';
+    creditCardRadio?.addEventListener('click', () => {
+      creditCardInfo.style.display = 'block';
+    });
+    cashRadio?.addEventListener('click', () => {
+      creditCardInfo.style.display = 'none';
     });
   });
 </script>
