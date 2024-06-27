@@ -26,9 +26,9 @@ const { title, showFooter = true } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="font-m-plus-rounded-1c bg-stone-100">
+  <body class="font-m-plus-rounded-1c bg-stone-100 flex flex-col min-h-screen">
     <Header />
-    <slot />
+    <slot flex-grow p-4 />
     <style>
       body {
         background-color: #f9fafb;
